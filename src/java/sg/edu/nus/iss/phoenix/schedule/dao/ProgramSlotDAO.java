@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.edu.nus.iss.phoenix.programslot.dao;
+package sg.edu.nus.iss.phoenix.schedule.dao;
 
 import java.sql.SQLException;
 import java.util.List;
-import sg.edu.nus.iss.phoenix.programslot.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
 /**
@@ -20,21 +20,14 @@ public interface ProgramSlotDAO {
     
     public ProgramSlot getObject(String id) throws NotFoundException, SQLException;
     
-    public void load(ProgramSlot valueObject) throws NotFoundException, SQLException;
-    
     public List<ProgramSlot> loadAll() throws SQLException, NotFoundException;
     
-    public void create(ProgramSlot valueObject) throws SQLException;
+    public boolean create(ProgramSlot valueObject) throws SQLException;
     
-    public void save(ProgramSlot userInfo) throws SQLException;
+    public boolean update(ProgramSlot valueObject) throws SQLException;
+    
     
     public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException;
     
-    public void deleteAll() throws SQLException;
-    
-    public int countAll() throws SQLException;
-    
     public List<ProgramSlot> searchMatching(ProgramSlot valueObject) throws SQLException;
-
-    public ProgramSlot searchMatching(String uid) throws SQLException;
 }

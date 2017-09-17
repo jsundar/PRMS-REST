@@ -14,8 +14,8 @@ import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
-import sg.edu.nus.iss.phoenix.programslot.entity.ProgramSlot;
-import sg.edu.nus.iss.phoenix.programslot.service.ProgramSlotService;
+import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
 
 /**
  *
@@ -28,14 +28,14 @@ public class UserService {
 
     DAOFactoryImpl factory;
     UserDao udao;
-    ProgramSlotService programSlotService;
+    ScheduleService programSlotService;
 
     public UserService() {
         super();
         // TODO Auto-generated constructor stub
         factory = new DAOFactoryImpl();
         udao = factory.getUserDAO();
-        programSlotService = new ProgramSlotService();
+        programSlotService = new ScheduleService();
     }
     
     public List<User> getUserList() throws SQLException {  

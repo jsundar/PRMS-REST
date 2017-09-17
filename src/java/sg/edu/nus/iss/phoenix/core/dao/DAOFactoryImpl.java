@@ -6,8 +6,8 @@ import sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDaoImpl;
 import sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDaoImpl;
 import sg.edu.nus.iss.phoenix.radioprogram.dao.ProgramDAO;
 import sg.edu.nus.iss.phoenix.radioprogram.dao.impl.ProgramDAOImpl;
-import sg.edu.nus.iss.phoenix.programslot.dao.impl.ProgramSlotDAOImpl;
-import sg.edu.nus.iss.phoenix.programslot.dao.ProgramSlotDAO;
+import sg.edu.nus.iss.phoenix.schedule.dao.impl.ProgramSlotDAOImpl;
+import sg.edu.nus.iss.phoenix.schedule.dao.ProgramSlotDAO;
 
 public class DAOFactoryImpl implements DAOFactory {
 	private UserDao userDAO = new UserDaoImpl();
