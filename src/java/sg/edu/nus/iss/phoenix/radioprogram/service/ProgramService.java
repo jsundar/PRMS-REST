@@ -8,7 +8,7 @@ import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.radioprogram.dao.ProgramDAO;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
-import sg.edu.nus.iss.phoenix.programslot.service.ProgramSlotService;
+import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
 
 public class ProgramService {
 	DAOFactoryImpl factory;
@@ -26,7 +26,7 @@ public class ProgramService {
 			list = (ArrayList<RadioProgram>) rpdao.searchMatching(rpso);
 		} catch (SQLException e) {
                     // TODO Auto-generated catch block
-                    Logger.getLogger(ProgramSlotService.class.getName()).log(Level.SEVERE, null, e);
+                    Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
 		}
 		return list;
 	}

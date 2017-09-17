@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.edu.nus.iss.phoenix.programslot.entity;
+package sg.edu.nus.iss.phoenix.schedule.entity;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,23 +18,23 @@ public class ProgramSlot {
    private String dateOfProgram;
    private String startTime;
    private String programName;
-   private String presenterId;
-   private String producerId;
+   private String presenter;
+   private String producer;
 
-    public String getPresenterId() {
-        return presenterId;
+    public String getPresenter() {
+        return presenter;
     }
 
-    public void setPresenterId(String presenterId) {
-        this.presenterId = presenterId;
+    public void setPresenter(String presenterId) {
+        this.presenter = presenterId;
     }
 
-    public String getProducerId() {
-        return producerId;
+    public String getProducer() {
+        return producer;
     }
 
-    public void setProducerId(String producerId) {
-        this.producerId = producerId;
+    public void setProducer(String producerId) {
+        this.producer = producerId;
     }
 
     public String getDuration() {

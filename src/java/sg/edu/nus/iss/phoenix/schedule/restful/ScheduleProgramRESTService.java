@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.edu.nus.iss.phoenix.programslot.restful;
+package sg.edu.nus.iss.phoenix.schedule.restful;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -13,24 +13,25 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.POST;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
  *
  * @author JOHN
  */
-@Path("user")
+@Path("schedules")
 @RequestScoped
-public class ProgramSlotService {
+public class ScheduleProgramRESTService {
 
     @Context
     private UriInfo context;
 
-    /**
-     * Creates a new instance of UserInfoController
-     */
-    public ProgramSlotService() {
+  
+    public ScheduleProgramRESTService() {
     }
 
     /**
@@ -39,11 +40,26 @@ public class ProgramSlotService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
+    public Response getWeeklySchedules() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
-
+    
+    @GET
+    @Path("/{startDate}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProgramSlots(@PathParam("startDate") String startDate) {
+            //TODO return proper representation object
+        throw new UnsupportedOperationException();
+    }
+    
+    @POST
+    @Path("/copy")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response copySchedule() {
+        throw new UnsupportedOperationException();
+    }
+ 
     /**
      * PUT method for updating or creating an instance of ProgramSlotService
      * @param content representation for the resource

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.edu.nus.iss.phoenix.programslot.dao.impl;
+package sg.edu.nus.iss.phoenix.schedule.dao.impl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
-import sg.edu.nus.iss.phoenix.programslot.entity.ProgramSlot;
-import sg.edu.nus.iss.phoenix.programslot.dao.ProgramSlotDAO;
+import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.schedule.dao.ProgramSlotDAO;
 
 /**
  *
@@ -36,9 +36,7 @@ public class ProgramSlotDAOImpl implements ProgramSlotDAO {
     public ProgramSlotDAOImpl() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-
+ 
     @Override
     public ProgramSlot createValueObject() {
         return new ProgramSlot(); 
@@ -51,23 +49,6 @@ public class ProgramSlotDAOImpl implements ProgramSlotDAO {
         
     }
 
-    @Override
-    public void load(ProgramSlot valueObject) throws NotFoundException, SQLException {
-       String sql = "SELECT * FROM user WHERE (id = ? ) ";
-        PreparedStatement stmt = null;
-
-        try {
-                stmt = this.connection.prepareStatement(sql);
-                stmt.setString(1, valueObject.getDateOfProgram());
-
-                singleQuery(stmt, valueObject);
-
-        } finally {
-                if (stmt != null)
-                        stmt.close();
-        }
-    }
-
     /**
      *
      * @return
@@ -76,7 +57,7 @@ public class ProgramSlotDAOImpl implements ProgramSlotDAO {
      */
     @Override
     public List<ProgramSlot> loadAll() throws SQLException, NotFoundException {
-        String sql = "SELECT * FROM user";
+        String sql = "SELECT * FROM Program-Slot";
         PreparedStatement stmt = null;
         List<ProgramSlot> programSlotList = new ArrayList<>();
         try {
@@ -107,8 +88,9 @@ public class ProgramSlotDAOImpl implements ProgramSlotDAO {
     }
 
     @Override
-    public void create(ProgramSlot valueObject) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean create(ProgramSlot valueObject) throws SQLException {
+        throw 
+                new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -116,26 +98,13 @@ public class ProgramSlotDAOImpl implements ProgramSlotDAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void deleteAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int countAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+  
+  
     @Override
     public List<ProgramSlot> searchMatching(ProgramSlot valueObject) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public ProgramSlot searchMatching(String uid) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+  
     private Connection openConnection() {
         Connection conn = null;
         try {
@@ -154,10 +123,6 @@ public class ProgramSlotDAOImpl implements ProgramSlotDAO {
         return conn;
     }
 
-    @Override
-    public void save(ProgramSlot userInfo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     
     /**
@@ -191,4 +156,9 @@ public class ProgramSlotDAOImpl implements ProgramSlotDAO {
                             stmt.close();
             }
 	}
+
+    @Override
+    public boolean update(ProgramSlot valueObject) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
