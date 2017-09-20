@@ -13,13 +13,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class ProgramSlot {
-    
-   private String duration;
-   private String dateOfProgram;
-   private String startTime;
-   private String programName;
-   private String presenter;
-   private String producer;
+
+    private int id;
+    private String duration;
+    private String dateOfProgram;
+    private String startTime;
+    private String programName;
+    private String presenter;
+    private String producer;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPresenter() {
         return presenter;
@@ -68,5 +77,5 @@ public class ProgramSlot {
     public void setProgramName(String programName) {
         this.programName = programName;
     }
-    
+
 }
