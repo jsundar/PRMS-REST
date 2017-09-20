@@ -5,6 +5,8 @@
  */
 package sg.edu.nus.iss.phoenix.schedule.entity;
 
+import java.sql.Date;
+import java.sql.Time;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,13 +16,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ProgramSlot {
 
-    private int id;
-    private String duration;
-    private String dateOfProgram;
-    private String startTime;
-    private String programName;
-    private String presenter;
-    private String producer;
+   private int id;
+   private String programName;
+   private float duration;
+   private Date dateOfProgram;
+   private Time startTime;   
+   private String presenter;
+   private String producer;
 
     public int getId() {
         return id;
@@ -29,7 +31,7 @@ public class ProgramSlot {
     public void setId(int id) {
         this.id = id;
     }
-
+   
     public String getPresenter() {
         return presenter;
     }
@@ -46,15 +48,15 @@ public class ProgramSlot {
         this.producer = producerId;
     }
 
-    public String getDuration() {
+    public float getDuration() {
         return duration;
     }
 
-    public String getDateOfProgram() {
+    public Date getDateOfProgram() {
         return dateOfProgram;
     }
 
-    public String getStartTime() {
+    public Time getStartTime() {
         return startTime;
     }
 
@@ -62,20 +64,20 @@ public class ProgramSlot {
         return programName;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(float duration) {
         this.duration = duration;
     }
 
-    public void setDateOfProgram(String dateOfProgram) {
+    public void setDateOfProgram(Date dateOfProgram) {
         this.dateOfProgram = dateOfProgram;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
 
     public void setProgramName(String programName) {
         this.programName = programName;
     }
-
+    
 }

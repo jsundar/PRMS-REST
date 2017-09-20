@@ -5,18 +5,18 @@
  */
 package sg.edu.nus.iss.phoenix.schedule.restful;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.POST;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.logging.Logger;
+
+import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
+import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
 
 /**
  * REST Web Service
@@ -30,12 +30,18 @@ public class ScheduleProgramRESTService {
     @Context
     private UriInfo context;
 
-  
+    private static final Logger logger = Logger.getLogger(ScheduleService.class.getName());
+
+    private ScheduleService scheduleService = null;
+
     public ScheduleProgramRESTService() {
+        scheduleService = new ScheduleService();
     }
 
     /**
-     * Retrieves representation of an instance of sg.edu.nus.iss.phoenix.authenticate.RESTful.ProgramSlotService
+     * Retrieves representation of an instance of
+     * sg.edu.nus.iss.phoenix.authenticate.RESTful.ProgramSlotService
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -44,24 +50,55 @@ public class ScheduleProgramRESTService {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
-    
+
     @GET
     @Path("/{startDate}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProgramSlots(@PathParam("startDate") String startDate) {
-            //TODO return proper representation object
+        //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
-    
+
+    /**
+     * POST method for creating an instance of resource
+     *
+     * @param ps
+     * @return
+     */
+    @POST
+    @Path("/create")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createSchedule(ProgramSlot ps) {
+        boolean statusFlag = scheduleService.createSchedule(ps);
+        if (statusFlag) {
+            return Response.status(Response.Status.OK).entity("Schedule created successfully").build();
+        } else {
+            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PUT
+    @Path("/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateSchedule(ProgramSlot ps) {
+        boolean statusFlag = scheduleService.modifySchedule(ps);
+        if (statusFlag) {
+            return Response.status(Response.Status.OK).entity("Schedule updated successfully").build();
+        } else {
+            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @POST
     @Path("/copy")
     @Produces(MediaType.APPLICATION_JSON)
     public Response copySchedule() {
         throw new UnsupportedOperationException();
     }
- 
+
     /**
      * PUT method for updating or creating an instance of ProgramSlotService
+     *
      * @param content representation for the resource
      */
     @PUT

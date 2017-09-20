@@ -12,26 +12,51 @@ import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
-import sg.edu.nus.iss.phoenix.schedule.dao.ProgramSlotDAO;
+import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 
 /**
  *
  * @author JOHN
  */
 public class ScheduleService {
+
     DAOFactoryImpl factory;
-    ProgramSlotDAO programSlotDAO;
-    
+    ScheduleDAO scheduleDAO;
+
     public ScheduleService() {
-        super();
-	
-	factory = new DAOFactoryImpl();
-	programSlotDAO = factory.getProgramSlotDAO();
+
+        factory = new DAOFactoryImpl();
+        scheduleDAO = factory.getScheduleDAO();
     }
-    
-    
+
+    @SuppressWarnings("CallToPrintStackTrace")
+    public boolean createSchedule(ProgramSlot ps) {
+        boolean statusFlag = false;
+        try {
+            statusFlag = scheduleDAO.create(ps);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return statusFlag;
+    }
+
+    public boolean modifySchedule(ProgramSlot ps) {
+        boolean statusFlag = false;
+        try {
+            statusFlag = scheduleDAO.update(ps);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return statusFlag;
+
+    }
+
     public List<ProgramSlot> getProgramSlotList() throws SQLException, NotFoundException {
-        return programSlotDAO.loadAll();
+        return scheduleDAO.loadAll();
     }
-    
+
 }
