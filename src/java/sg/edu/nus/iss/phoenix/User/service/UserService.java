@@ -34,7 +34,9 @@ public class UserService {
         super();
         // TODO Auto-generated constructor stub
         factory = new DAOFactoryImpl();
+       
         udao = factory.getUserDAO();
+        
         programSlotService = new ScheduleService();
     }
     

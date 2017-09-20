@@ -17,13 +17,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
 
 /**
  * REST Web Service
  *
  * @author JOHN
  */
-@Path("schedules")
+@Path("/schedules")
 @RequestScoped
 public class ScheduleProgramRESTService {
 
@@ -39,11 +40,15 @@ public class ScheduleProgramRESTService {
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getWeeklySchedules() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
-    }
+       
+        Schedules schedules = new Schedules();
+
+        ScheduleService service = new ScheduleService();
+        schedules.setWeeklySchedules(service.getWeeklySchedules());
+        
+        return Response.ok(schedules, MediaType.APPLICATION_JSON).build();
+     }
     
     @GET
     @Path("/{startDate}")

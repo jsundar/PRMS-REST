@@ -444,7 +444,8 @@ public class UserDaoImpl implements UserDao {
 
 		try {
 			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/phoenix", "root",
+					"jdbc:mysql://localhost:3306/p'"
+                                                + " hoenix", "root",
 					"Test@1234");
 		} catch (SQLException e) {
                     e.printStackTrace();

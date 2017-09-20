@@ -92,12 +92,13 @@ public class UserRESTService {
     public Response updateUser(User user) {
         try {
             service.updateUser(user);
-            return Response.ok(user, MediaType.APPLICATION_JSON).build();
+            return Response.ok(user, MediaType.TEXT_PLAIN).build();
         } catch(SQLException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
             return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
         } catch(NotFoundException e ) {
             logger.log(Level.SEVERE, e.getMessage(), e);
+            
             return Response.status(Response.Status.NOT_FOUND).entity("No Record found..").build();
         }
     }
