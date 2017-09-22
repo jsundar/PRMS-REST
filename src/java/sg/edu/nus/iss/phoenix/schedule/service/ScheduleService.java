@@ -69,8 +69,8 @@ public class ScheduleService {
 
     }
 
-    public List<ProgramSlot> getProgramSlotList() throws SQLException, NotFoundException {
-        return scheduleDAO.loadAll();
+    public List<ProgramSlot> getProgramSlotList(String startDate) throws SQLException {
+        return scheduleDAO.searchMatching(startDate);
     }
     
     public List<WeeklySchedule> getWeeklySchedules() {

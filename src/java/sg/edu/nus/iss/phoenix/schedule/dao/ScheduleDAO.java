@@ -29,5 +29,5 @@ public interface ScheduleDAO {
     
     public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException;
     
-    public List<ProgramSlot> searchMatching(ProgramSlot valueObject) throws SQLException;
+    public List<ProgramSlot> searchMatching(String startDate) throws SQLException;
 }

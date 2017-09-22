@@ -55,7 +55,16 @@ public class ScheduleProgramRESTService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProgramSlots(@PathParam("startDate") String startDate) {
         //TODO return proper representation object
-        throw new UnsupportedOperationException();
+        ProgramSlots programSlots = new ProgramSlots();
+        ScheduleService scheduleService = new ScheduleService();
+        
+        try {
+            programSlots.setProgramSlots(scheduleService.getProgramSlotList(startDate));
+            return Response.ok(programSlots, MediaType.APPLICATION_JSON).build();
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleProgramRESTService.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     /**

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+import sg.edu.nus.iss.phoenix.core.dao.DBConstants;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
 /**
@@ -435,21 +436,18 @@ public class UserDaoImpl implements UserDao {
 	}
         
 	private Connection openConnection() {
-		Connection conn = null;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-		}
+        Connection conn = null;
+        try {
+            Class.forName(DBConstants.COM_MYSQL_JDBC_DRIVER);
+        } catch (ClassNotFoundException e) {
+            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        }
 
-		try {
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/p'"
-                                                + " hoenix", "root",
-					"Test@1234");
-		} catch (SQLException e) {
-                    e.printStackTrace();
-		}
-		return conn;
-	}
+        try {
+            conn = DriverManager.getConnection(DBConstants.dbUrl, DBConstants.dbUserName, DBConstants.dbPassword);
+        } catch (SQLException e) {
+            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return conn;
+    }
 }

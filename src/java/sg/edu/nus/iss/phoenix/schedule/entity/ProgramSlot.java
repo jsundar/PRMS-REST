@@ -5,8 +5,7 @@
  */
 package sg.edu.nus.iss.phoenix.schedule.entity;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -18,9 +17,9 @@ public class ProgramSlot {
 
    private int id;
    private String programName;
-   private float duration;
-   private Date dateOfProgram;
-   private Time startTime;   
+   private String duration;
+   private String dateOfProgram;
+   private String startTime;   
    private String presenter;
    private String producer;
 
@@ -48,15 +47,15 @@ public class ProgramSlot {
         this.producer = producerId;
     }
 
-    public float getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public Date getDateOfProgram() {
+    public String getDateOfProgram() {
         return dateOfProgram;
     }
 
-    public Time getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
@@ -64,15 +63,15 @@ public class ProgramSlot {
         return programName;
     }
 
-    public void setDuration(float duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public void setDateOfProgram(Date dateOfProgram) {
+    public void setDateOfProgram(String dateOfProgram) {
         this.dateOfProgram = dateOfProgram;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 

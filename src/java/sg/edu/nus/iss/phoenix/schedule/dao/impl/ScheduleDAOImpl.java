@@ -10,7 +10,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +39,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     }
 
     public ScheduleDAOImpl() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
@@ -61,9 +65,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             stmt = this.connection.prepareStatement(sql);
 
             stmt.setInt(1, valueObject.getId());
-            stmt.setFloat(2, valueObject.getDuration());
-            stmt.setDate(3, valueObject.getDateOfProgram());
-            stmt.setTime(4, valueObject.getStartTime());
+            stmt.setString(2, valueObject.getDuration());
+            stmt.setString(3, valueObject.getDateOfProgram());
+            stmt.setString(4, valueObject.getStartTime());
             stmt.setString(5, valueObject.getProgramName());
             stmt.setString(6, valueObject.getPresenter());
             stmt.setString(7, valueObject.getProducer());
@@ -90,9 +94,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         try {
             stmt = this.connection.prepareStatement(sql);
 
-            stmt.setFloat(1, valueObject.getDuration());
-            stmt.setDate(2, valueObject.getDateOfProgram());
-            stmt.setTime(3, valueObject.getStartTime());
+            stmt.setString(1, valueObject.getDuration());
+            stmt.setString(2, valueObject.getDateOfProgram());
+            stmt.setString(3, valueObject.getStartTime());
             stmt.setString(4, valueObject.getProgramName());
             stmt.setString(5, valueObject.getPresenter());
             stmt.setString(6, valueObject.getProducer());
@@ -134,13 +138,14 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             while (result.next()) {
                 ProgramSlot programSlot = new ProgramSlot();
                 programSlot.setId(result.getInt("id"));
-                programSlot.setDateOfProgram(result.getDate("dateOfProgram"));
-                programSlot.setDuration(result.getFloat("duration"));
-                programSlot.setStartTime(result.getTime("startTime"));
+                programSlot.setDateOfProgram(result.getString("dateOfProgram"));
+                programSlot.setDuration(result.getString("duration"));
+                programSlot.setStartTime(result.getString("startTime"));
                 programSlot.setProgramName(result.getString("program-name"));
                 programSlot.setPresenter(result.getString("presenter"));
                 programSlot.setProducer(result.getString("producer"));
 
+                
                 programSlotList.add(programSlot);
             }
             if (programSlotList.isEmpty()) {
@@ -166,42 +171,72 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     }
 
     @Override
-    public List<ProgramSlot> searchMatching(ProgramSlot valueObject) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<ProgramSlot> searchMatching(String startDate) throws SQLException {
+        List<ProgramSlot> ret = new ArrayList<>();
+        
+        String query = "SELECT * FROM `program-slot` WHERE dateOfProgram >= ? AND dateOfProgram <= ?";
+        
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            connection = openConnection();
+            pstmt = connection.prepareStatement(query);
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            Date sDate = sdf.parse(startDate);
+            
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(sDate);
+            cal.add(Calendar.DAY_OF_MONTH, 7);
+            
+            Date eDate = cal.getTime();
+            
+            String strStartDate = sdf.format(sDate);
+            String strEndDate = sdf.format(eDate);
+            
+            pstmt.setString(1, strStartDate);
+            pstmt.setString(2, strEndDate);
+            
+            rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                ProgramSlot currentObject = new ProgramSlot();
+                readRecord(rs, currentObject);
+                ret.add(currentObject);
+            }
+            
+        } catch (SQLException e) {
+            Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, e);
+            throw e;
+        } catch (ParseException ex) {
+            Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (rs != null) {
+                rs.close();
+                rs = null;
+            }
+            
+            if (pstmt != null) {
+                pstmt.close();
+                pstmt = null;
+            }
+            
+            closeConnection();
+        }
+        
+        return ret;
     }
 
-    /**
-     * databaseQuery-method. This method is a helper method for internal use. It
-     * will execute all database queries that will return only one row. The
-     * resultset will be converted to valueObject. If no rows were found,
-     * NotFoundException will be thrown.
-     *
-     * @param stmt This parameter contains the SQL statement to be excuted.
-     * @param valueObject Class-instance where resulting data will be stored.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
-     */
-    protected void singleQuery(PreparedStatement stmt, ProgramSlot valueObject)
-            throws NotFoundException, SQLException {
+    protected void readRecord(ResultSet result, ProgramSlot valueObject)
+            throws SQLException {
 
-        try (ResultSet result = stmt.executeQuery()) {
-
-            if (result.next()) {
-                valueObject.setId(result.getInt("id"));
-                valueObject.setDateOfProgram(result.getDate("dateOfProgram"));
-                valueObject.setDuration(result.getFloat("duration"));
-                valueObject.setStartTime(result.getTime("startTime"));
-                valueObject.setProgramName(result.getString("program-name"));
-                valueObject.setProgramName(result.getString("presenter"));
-                valueObject.setProgramName(result.getString("producer"));
-            } else {
-                throw new NotFoundException("ProgramSlot Not Found!");
-            }
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-        }
+        valueObject.setId(result.getInt("id"));
+        valueObject.setDateOfProgram(result.getString("dateOfProgram"));
+        valueObject.setDuration(result.getString("duration"));
+        valueObject.setStartTime(result.getString("startTime"));
+        valueObject.setProgramName(result.getString("program-name"));
+        valueObject.setProgramName(result.getString("presenter"));
+        valueObject.setProgramName(result.getString("producer"));
     }
 
     private Connection openConnection() {
