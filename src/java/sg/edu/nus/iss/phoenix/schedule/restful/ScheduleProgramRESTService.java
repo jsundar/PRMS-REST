@@ -74,7 +74,6 @@ public class ScheduleProgramRESTService {
      * @return
      */
     @POST
-    @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createSchedule(ProgramSlot ps) {
         boolean statusFlag = scheduleService.createSchedule(ps);
@@ -86,7 +85,6 @@ public class ScheduleProgramRESTService {
     }
 
     @PUT
-    @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateSchedule(ProgramSlot ps) {
         boolean statusFlag = scheduleService.modifySchedule(ps);
