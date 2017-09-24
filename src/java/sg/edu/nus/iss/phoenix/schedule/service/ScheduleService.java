@@ -27,12 +27,10 @@ import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.entity.WeeklySchedule;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 
-
 /**
  *
  * @author JOHN
  */
-
 public class ScheduleService {
 
     DAOFactoryImpl factory;
@@ -45,78 +43,93 @@ public class ScheduleService {
     }
 
     @SuppressWarnings("CallToPrintStackTrace")
-    public boolean createSchedule(ProgramSlot ps) {
-        boolean statusFlag = false;
+    public String createSchedule(ProgramSlot ps) {
+        String statusMessage = "";
         try {
-            statusFlag = scheduleDAO.create(ps);
+            statusMessage = validateScedule(ps);
+            if (statusMessage.length() > 0) {
+                return statusMessage;
+            }
+            if (scheduleDAO.create(ps)) {
+                statusMessage = "Schedule created successfully";
+            } else {
+                statusMessage = "Error occured while processing...";
+            }
+
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
         }
-        return statusFlag;
+        return statusMessage;
     }
 
-    public boolean modifySchedule(ProgramSlot ps) {
-        boolean statusFlag = false;
+    public String modifySchedule(ProgramSlot ps) {
+        String statusMessage = "";
         try {
-            statusFlag = scheduleDAO.update(ps);
+            statusMessage = validateScedule(ps);
+            if (statusMessage.length() > 0) {
+                return statusMessage;
+            }
+            if (scheduleDAO.update(ps)) {
+                statusMessage = "Schedule updated successfully";
+            } else {
+                statusMessage = "Error occured while processing...";
+            }
+
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
         }
-        return statusFlag;
-
+        return statusMessage;
     }
 
     public List<ProgramSlot> getProgramSlotList(String startDate) throws SQLException {
         return scheduleDAO.searchMatching(startDate);
     }
-    
+
     public List<WeeklySchedule> getWeeklySchedules() {
         List<WeeklySchedule> weeklySchedules = new ArrayList<>();
-        
+
         Calendar prevYear = Calendar.getInstance();
         prevYear.add(Calendar.YEAR, -1);
         int year = prevYear.get(Calendar.YEAR);
         LocalDate firstSundayOfNextMonth = LocalDate
-              .ofYearDay(year, 365)
-              .with(firstDayOfNextMonth())
-              .with(nextOrSame(DayOfWeek.SUNDAY));
-        
+                .ofYearDay(year, 365)
+                .with(firstDayOfNextMonth())
+                .with(nextOrSame(DayOfWeek.SUNDAY));
+
         Calendar startWeek = Calendar.getInstance();
-                        startWeek.set(firstSundayOfNextMonth.getYear(), 
-                        firstSundayOfNextMonth.getMonthValue() - 1, 
-                        firstSundayOfNextMonth.getDayOfMonth());
-        
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        startWeek.set(firstSundayOfNextMonth.getYear(),
+                firstSundayOfNextMonth.getMonthValue() - 1,
+                firstSundayOfNextMonth.getDayOfMonth());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
         System.out.println(sdf.format(startWeek.getTime()));
-        
-        for (int i=1; i<= 52; i++) {
+
+        for (int i = 1; i <= 52; i++) {
             startWeek.add(Calendar.DAY_OF_MONTH, 7);
-            
+
             WeeklySchedule weeklySchedule = new WeeklySchedule();
             weeklySchedule.setStartDate(sdf.format(startWeek.getTime()));
             System.out.println("Week " + i + " " + sdf.format(startWeek.getTime()));
             weeklySchedule.setAssignedBy("Station Manager");
             weeklySchedules.add(weeklySchedule);
         }
-        
+
         return weeklySchedules;
-    } 
+    }
 
     public boolean copySchedule(String fromDate, String toDate) {
         boolean result = false;
-        
+
         try {
             List<ProgramSlot> fromProgramSlots = getProgramSlotList(fromDate);
-            
+
             fromProgramSlots = prepareSchedulesCopy(fromProgramSlots);
-            
+
             for (ProgramSlot programSlot : fromProgramSlots) {
-                
+
                 // Need to check duplicate
                 createSchedule(programSlot);
             }
@@ -125,36 +138,52 @@ public class ScheduleService {
         } catch (ParseException ex) {
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return result;
     }
-    
+
     private List<ProgramSlot> prepareSchedulesCopy(List<ProgramSlot> fromProgramSlots) throws ParseException {
-        
-        
+
         for (ProgramSlot fromProgramSlot : fromProgramSlots) {
             // add 7 days
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            
 
             Date sDate = sdf.parse(fromProgramSlot.getDateOfProgram());
-            
+
             Calendar cal = Calendar.getInstance();
             cal.setTime(sDate);
             cal.add(Calendar.DAY_OF_MONTH, 7);
-            
+
             Date eDate = cal.getTime();
-            
+
             String strStartDate = sdf.format(sDate);
-            
+
             String strEndDate = sdf.format(eDate);
-            
+
             fromProgramSlot.setDateOfProgram(strEndDate);
             fromProgramSlot.setStartTime(strStartDate + fromProgramSlot.getStartTime());
-            
+
         }
-                
+
         return fromProgramSlots;
     }
-    
+
+    private String validateScedule(ProgramSlot ps) throws SQLException {
+        String validationStatus = "";
+
+        if (ps.getProgram().getName().length() > 0 && ps.getDateOfProgram().length() > 0) {
+            if (scheduleDAO.checkProgramSlotAvailabiltiy(ps, "All")) {
+                return validationStatus;
+            } else if (scheduleDAO.checkProgramSlotAvailabiltiy(ps, "")) {
+                return "ProgramSlot overlapping";
+            } else if (ps.getPresenter().getId().length() > 0 && scheduleDAO.checkProgramSlotAvailabiltiy(ps, "Presenter")) {
+                return "Presenter not available";
+            } else if (ps.getProducer().getId().length() > 0 && scheduleDAO.checkProgramSlotAvailabiltiy(ps, "Producer")) {
+                return "Producer not available";
+            }
+        }
+
+        return validationStatus;
+    }
+
 }
