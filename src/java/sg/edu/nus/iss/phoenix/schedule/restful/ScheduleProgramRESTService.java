@@ -98,8 +98,14 @@ public class ScheduleProgramRESTService {
     @POST
     @Path("/copy")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response copySchedule() {
-        throw new UnsupportedOperationException();
+    public Response copySchedule(CopySchedule copySchedule) {
+        boolean status = scheduleService.copySchedule(copySchedule.getFromDate(), copySchedule.getToDate());
+        
+        if (status) {
+            return Response.status(Response.Status.OK).entity("Schedule copied successfully").build();
+        } else {
+            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     /**

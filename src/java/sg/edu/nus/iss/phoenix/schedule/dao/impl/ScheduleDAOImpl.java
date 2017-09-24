@@ -174,7 +174,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     public List<ProgramSlot> searchMatching(String startDate) throws SQLException {
         List<ProgramSlot> ret = new ArrayList<>();
         
-        String query = "SELECT * FROM `program-slot` WHERE dateOfProgram >= ? AND dateOfProgram <= ?";
+        String query = "SELECT id, duration, dateOfProgram, DATE_FORMAT(startTime,  '%H:%i') startTime, "
+                + "`program-name`, presenter, producer FROM `program-slot` "
+                + "WHERE dateOfProgram >= ? AND dateOfProgram <= ?";
         
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -230,9 +232,19 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     protected void readRecord(ResultSet result, ProgramSlot valueObject)
             throws SQLException {
 
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdfStartDateTme = new SimpleDateFormat("HH:mm:ss");
+        
         valueObject.setId(result.getInt("id"));
-        valueObject.setDateOfProgram(result.getString("dateOfProgram"));
-        valueObject.setDuration(result.getString("duration"));
+        
+        Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, "Date of Program : " + result.getDate("dateOfProgram"));
+        Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, "Date of Program : " + result.getDate("duration"));
+       
+        valueObject.setDateOfProgram(sdfDate.format(result.getDate("dateOfProgram")));
+        
+       
+        valueObject.setDuration(sdfTime.format(result.getTime("duration")));
         valueObject.setStartTime(result.getString("startTime"));
         valueObject.setProgramName(result.getString("program-name"));
         valueObject.setProgramName(result.getString("presenter"));
@@ -279,6 +291,49 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
         int result = stmt.executeUpdate();
 
+        return result;
+    }
+
+    @Override
+    public boolean isDuplicate(ProgramSlot ps) throws SQLException {
+        boolean result = false;
+        
+        String query = "SELECT id, duration, dateOfProgram, DATE_FORMAT(startTime,  '%H:%i') startTime, `program-name`, presenter, producer "
+                     + "FROM `program-slot` WHERE dateOfProgram = ? and DATE_FORMAT(startTime,  '%H:%i') = ? and "
+                     + "program-name = ? ";
+        
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        try {
+            connection = openConnection();
+            pstmt = connection.prepareStatement(query);
+            
+            pstmt.setString(1, ps.getDateOfProgram());
+            pstmt.setString(2, ps.getStartTime());
+            pstmt.setString(3, ps.getProgramName());
+            
+            rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                ProgramSlot currentObject = new ProgramSlot();
+                readRecord(rs, currentObject);
+                result = true;
+            }
+                    
+        } catch (SQLException e) {
+            Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            
+            closeConnection();
+        }
+        
         return result;
     }
 

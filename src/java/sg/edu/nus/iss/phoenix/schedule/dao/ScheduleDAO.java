@@ -30,4 +30,6 @@ public interface ScheduleDAO {
     public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException;
     
     public List<ProgramSlot> searchMatching(String startDate) throws SQLException;
+    
+    public boolean isDuplicate(ProgramSlot valueObject) throws SQLException;
 }

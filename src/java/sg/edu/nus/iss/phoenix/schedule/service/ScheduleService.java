@@ -6,6 +6,7 @@
 package sg.edu.nus.iss.phoenix.schedule.service;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -104,6 +105,56 @@ public class ScheduleService {
         }
         
         return weeklySchedules;
-    }
+    } 
 
+    public boolean copySchedule(String fromDate, String toDate) {
+        boolean result = false;
+        
+        try {
+            List<ProgramSlot> fromProgramSlots = getProgramSlotList(fromDate);
+            
+            fromProgramSlots = prepareSchedulesCopy(fromProgramSlots);
+            
+            for (ProgramSlot programSlot : fromProgramSlots) {
+                
+                // Need to check duplicate
+                createSchedule(programSlot);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result;
+    }
+    
+    private List<ProgramSlot> prepareSchedulesCopy(List<ProgramSlot> fromProgramSlots) throws ParseException {
+        
+        
+        for (ProgramSlot fromProgramSlot : fromProgramSlots) {
+            // add 7 days
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            
+
+            Date sDate = sdf.parse(fromProgramSlot.getDateOfProgram());
+            
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(sDate);
+            cal.add(Calendar.DAY_OF_MONTH, 7);
+            
+            Date eDate = cal.getTime();
+            
+            String strStartDate = sdf.format(sDate);
+            
+            String strEndDate = sdf.format(eDate);
+            
+            fromProgramSlot.setDateOfProgram(strEndDate);
+            fromProgramSlot.setStartTime(strStartDate + fromProgramSlot.getStartTime());
+            
+        }
+                
+        return fromProgramSlots;
+    }
+    
 }
