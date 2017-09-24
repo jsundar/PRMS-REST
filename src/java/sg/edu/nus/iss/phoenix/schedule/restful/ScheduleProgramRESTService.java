@@ -108,13 +108,4 @@ public class ScheduleProgramRESTService {
         }
     }
     
-    /**
-     * PUT method for updating or creating an instance of ProgramSlotService
-     *
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
-    }
 }
