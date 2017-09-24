@@ -112,17 +112,21 @@ public class ScheduleService {
         
         try {
             List<ProgramSlot> fromProgramSlots = getProgramSlotList(fromDate);
+            List<ProgramSlot> toProgramSlots = getProgramSlotList(toDate);
             
             fromProgramSlots = prepareSchedulesCopy(fromProgramSlots);
             
-            for (ProgramSlot programSlot : fromProgramSlots) {
-                
-                // Need to check duplicate
-                createSchedule(programSlot);
+            // Checking Duplicate
+            if (toProgramSlots.isEmpty()) {
+                for (ProgramSlot programSlot : fromProgramSlots) {
+                    createSchedule(programSlot);
+                }
+                result = true;
+            } else {
+                result = false;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+            
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
         }
         
