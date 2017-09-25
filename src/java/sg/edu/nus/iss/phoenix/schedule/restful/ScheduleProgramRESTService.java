@@ -40,15 +40,13 @@ public class ScheduleProgramRESTService {
     @GET
     public Response getWeeklySchedules() {
 
-       
         Schedules schedules = new Schedules();
 
         ScheduleService service = new ScheduleService();
         schedules.setWeeklySchedules(service.getWeeklySchedules());
-        
+
         return Response.ok(schedules, MediaType.APPLICATION_JSON).build();
-     }
-    
+    }
 
     @GET
     @Path("/{startDate}")
@@ -57,7 +55,7 @@ public class ScheduleProgramRESTService {
         //TODO return proper representation object
         ProgramSlots programSlots = new ProgramSlots();
         ScheduleService scheduleService = new ScheduleService();
-        
+
         try {
             programSlots.setProgramSlots(scheduleService.getProgramSlotList(startDate));
             return Response.ok(programSlots, MediaType.APPLICATION_JSON).build();
@@ -76,23 +74,15 @@ public class ScheduleProgramRESTService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createSchedule(ProgramSlot ps) {
-        boolean statusFlag = scheduleService.createSchedule(ps);
-        if (statusFlag) {
-            return Response.status(Response.Status.OK).entity("Schedule created successfully").build();
-        } else {
-            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
+        String statusMessage = scheduleService.createSchedule(ps);
+        return Response.status(Response.Status.OK).entity(statusMessage).build();
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateSchedule(ProgramSlot ps) {
-        boolean statusFlag = scheduleService.modifySchedule(ps);
-        if (statusFlag) {
-            return Response.status(Response.Status.OK).entity("Schedule updated successfully").build();
-        } else {
-            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
+        String statusMessage = scheduleService.modifySchedule(ps);
+        return Response.status(Response.Status.OK).entity(statusMessage).build();
     }
 
     @POST
@@ -100,12 +90,13 @@ public class ScheduleProgramRESTService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response copySchedule(CopySchedule copySchedule) {
         boolean status = scheduleService.copySchedule(copySchedule.getFromDate(), copySchedule.getToDate());
-        
+
         if (status) {
             return Response.status(Response.Status.OK).entity("Schedule copied successfully").build();
         } else {
             return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+
     }
     
     /**
@@ -117,4 +108,5 @@ public class ScheduleProgramRESTService {
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
     }
+
 }
