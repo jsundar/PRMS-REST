@@ -18,6 +18,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
+import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+import sg.edu.nus.iss.phoenix.core.dao.DAOFactory;
+import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.dao.DBConstants;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
@@ -132,6 +136,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         String sql = "SELECT * FROM Program-Slot";
         PreparedStatement stmt = null;
         List<ProgramSlot> programSlotList = new ArrayList<>();
+        
         try {
             stmt = this.connection.prepareStatement(sql);
             ResultSet result = stmt.executeQuery();
@@ -141,6 +146,8 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 programSlot.setDateOfProgram(result.getString("dateOfProgram"));
                 programSlot.setDuration(result.getString("duration"));
                 programSlot.setStartTime(result.getString("startTime"));
+                
+                
 //                programSlot.setProgramName(result.getString("program-name"));
 //                programSlot.setPresenter(result.getString("presenter"));
 //                programSlot.setProducer(result.getString("producer"));
@@ -182,6 +189,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         try {
             connection = openConnection();
             pstmt = connection.prepareStatement(query);
+            
+            DAOFactory daoFactory = new DAOFactoryImpl();
+            UserDao userDAO = daoFactory.getUserDAO();  
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             Date sDate = sdf.parse(startDate);
@@ -203,7 +213,16 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             while (rs.next()) {
                 ProgramSlot currentObject = new ProgramSlot();
                 readRecord(rs, currentObject);
+                
+                try {
+                   // currentObject.setPresenter(userDAO.load(currentObject.getPresenter()));
+                } catch (Exception e) {
+                }
+                
+                
                 ret.add(currentObject);
+                
+                
             }
 
         } catch (SQLException e) {
@@ -244,6 +263,16 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
         valueObject.setDuration(sdfTime.format(result.getTime("duration")));
         valueObject.setStartTime(result.getString("startTime"));
+        
+        User presenter = new User();
+        presenter.setId(result.getString("presenter"));
+        valueObject.setPresenter(presenter);
+        
+        User producer = new User();
+        producer.setId(result.getString("producer"));
+        valueObject.setProducer(producer);
+       
+            
 //        valueObject.setProgramName(result.getString("program-name"));
 //        valueObject.setProgramName(result.getString("presenter"));
 //        valueObject.setProgramName(result.getString("producer"));
