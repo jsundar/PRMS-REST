@@ -75,7 +75,7 @@ public class ProgramSlot {
         this.startTime = startTime;
     }
 
-    public void setProgramName(RadioProgram program) {
+    public void setProgram(RadioProgram program) {
         this.program = program;
     }
     

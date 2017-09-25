@@ -24,6 +24,8 @@ import sg.edu.nus.iss.phoenix.core.dao.DAOFactory;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.dao.DBConstants;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
+import sg.edu.nus.iss.phoenix.radioprogram.dao.ProgramDAO;
+import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 
@@ -184,6 +186,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             
             DAOFactory daoFactory = new DAOFactoryImpl();
             UserDao userDAO = daoFactory.getUserDAO();  
+            ProgramDAO programDAO = daoFactory.getProgramDAO();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             Date sDate = sdf.parse(startDate);
@@ -207,8 +210,10 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 readRecord(rs, currentObject);
                 
                 try {
+                    
                     currentObject.setPresenter(userDAO.getObject(currentObject.getPresenter().getId()));
                     currentObject.setProducer(userDAO.getObject(currentObject.getProducer().getId()));
+                    currentObject.setProgram(programDAO.getObject(currentObject.getProgram().getName()));
                 } catch (NotFoundException e) {
                     Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, e);
                 }
@@ -253,6 +258,10 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
         valueObject.setDuration(sdfTime.format(result.getTime("duration")));
         valueObject.setStartTime(result.getString("startTime"));
+        
+        RadioProgram radioProgram = new RadioProgram();
+        radioProgram.setName(result.getString("program-name"));
+        valueObject.setProgram(radioProgram);
         
         User presenter = new User();
         presenter.setId(result.getString("presenter"));
