@@ -49,7 +49,7 @@ public class ScheduleProgramRESTService {
     }
 
     @GET
-    @Path("/{startDate}")
+    @Path("/{startDate}/programslots")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProgramSlots(@PathParam("startDate") String startDate) {
         //TODO return proper representation object

@@ -142,16 +142,8 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 ProgramSlot programSlot = new ProgramSlot();
-                programSlot.setId(result.getInt("id"));
-                programSlot.setDateOfProgram(result.getString("dateOfProgram"));
-                programSlot.setDuration(result.getString("duration"));
-                programSlot.setStartTime(result.getString("startTime"));
                 
-                
-//                programSlot.setProgramName(result.getString("program-name"));
-//                programSlot.setPresenter(result.getString("presenter"));
-//                programSlot.setProducer(result.getString("producer"));
-
+                readRecord(result, programSlot);
                 programSlotList.add(programSlot);
             }
             if (programSlotList.isEmpty()) {
@@ -215,14 +207,12 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 readRecord(rs, currentObject);
                 
                 try {
-                   // currentObject.setPresenter(userDAO.load(currentObject.getPresenter()));
-                } catch (Exception e) {
+                    currentObject.setPresenter(userDAO.getObject(currentObject.getPresenter().getId()));
+                    currentObject.setProducer(userDAO.getObject(currentObject.getProducer().getId()));
+                } catch (NotFoundException e) {
+                    Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, e);
                 }
-                
-                
                 ret.add(currentObject);
-                
-                
             }
 
         } catch (SQLException e) {
