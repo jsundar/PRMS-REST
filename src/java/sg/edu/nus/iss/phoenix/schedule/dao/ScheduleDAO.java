@@ -31,5 +31,5 @@ public interface ScheduleDAO {
     
     public List<ProgramSlot> searchMatching(String startDate) throws SQLException;
     
-    public boolean isDuplicate(ProgramSlot valueObject) throws SQLException;
+    public boolean checkProgramSlotAvailabiltiy(ProgramSlot valueObject, String criteria) throws SQLException; 
 }

@@ -5,9 +5,9 @@
  */
 package sg.edu.nus.iss.phoenix.schedule.entity;
 
-import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import sg.edu.nus.iss.phoenix.authenticate.entity.User;
+import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 /**
  *
  * @author JOHN
@@ -16,12 +16,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ProgramSlot {
 
    private int id;
-   private String programName;
+   private RadioProgram program;
    private String duration;
    private String dateOfProgram;
    private String startTime;   
-   private String presenter;
-   private String producer;
+   private User presenter;
+   private User producer;
 
     public int getId() {
         return id;
@@ -31,20 +31,20 @@ public class ProgramSlot {
         this.id = id;
     }
    
-    public String getPresenter() {
-        return presenter;
+    public User getPresenter() {
+        return presenter != null ? presenter : new User();
     }
 
-    public void setPresenter(String presenterId) {
-        this.presenter = presenterId;
+    public void setPresenter(User presenter) {
+        this.presenter = presenter;
     }
 
-    public String getProducer() {
-        return producer;
+    public User getProducer() {
+        return producer != null ? producer : new User();
     }
 
-    public void setProducer(String producerId) {
-        this.producer = producerId;
+    public void setProducer(User producer) {
+        this.producer = producer;
     }
 
     public String getDuration() {
@@ -59,8 +59,8 @@ public class ProgramSlot {
         return startTime;
     }
 
-    public String getProgramName() {
-        return programName;
+    public RadioProgram getProgram() {
+        return program != null ? program : new RadioProgram();
     }
 
     public void setDuration(String duration) {
@@ -75,8 +75,8 @@ public class ProgramSlot {
         this.startTime = startTime;
     }
 
-    public void setProgramName(String programName) {
-        this.programName = programName;
+    public void setProgramName(RadioProgram program) {
+        this.program = program;
     }
     
 }
