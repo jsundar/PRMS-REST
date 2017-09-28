@@ -447,6 +447,7 @@ public class UserDaoImpl implements UserDao {
             conn = DriverManager.getConnection(DBConstants.dbUrl, DBConstants.dbUserName, DBConstants.dbPassword);
         } catch (SQLException e) {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+            
         }
         return conn;
     }
