@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package sg.edu.nus.iss.phoenix.authenticate.RESTful;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 
 @XmlRootElement
 /**
@@ -12,10 +14,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author User
  */
 public class AuthInfo {
-   private String username;
+
+    private String username;
     private boolean authStatus;
     private String role;
-    
+    private User user;
+
     public String getUsername() {
         return username;
     }
@@ -23,8 +27,6 @@ public class AuthInfo {
     public void setUsername(String username) {
         this.username = username;
     }
-
-    
 
     public boolean isAuthStatus() {
         return authStatus;
@@ -34,8 +36,6 @@ public class AuthInfo {
         this.authStatus = authStatus;
     }
 
-    
-
     public String getRole() {
         return role;
     }
@@ -43,5 +43,13 @@ public class AuthInfo {
     public void setRole(String role) {
         this.role = role;
     }
-  
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }
