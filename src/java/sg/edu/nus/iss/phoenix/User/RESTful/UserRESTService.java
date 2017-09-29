@@ -70,7 +70,7 @@ public class UserRESTService {
     }
     
     @GET
-    @Path("select")
+    @Path("select/{userid}")
     public Response selectAllUser(@PathParam("userid") String userid) {
         
         User user = new User();
