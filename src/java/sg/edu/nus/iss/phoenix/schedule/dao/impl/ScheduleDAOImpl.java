@@ -436,7 +436,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     
      public int getAssignedUserToProgramSlot(String userId) throws SQLException {
             
-        String sqlString = "SELECT count(*) `radio-program` where presenter = ? or producer = ?";
+        String sqlString = "SELECT count(*) from `program-slot`  where presenter = ? or producer = ?";
 
         PreparedStatement stmt = null;
         ResultSet rs = null;

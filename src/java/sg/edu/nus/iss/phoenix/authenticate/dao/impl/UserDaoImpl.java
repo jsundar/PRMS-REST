@@ -177,11 +177,12 @@ public class UserDaoImpl implements UserDao {
             stmt = this.connection.prepareStatement(sql);
             stmt.setString(1, valueObject.getPassword());
             stmt.setString(2, valueObject.getName());
-            stmt.setString(3, valueObject.getRoles().get(0).getRole());
+            
 
 //            stmt.setString(4, valueObject.getId());
             String roles = valueObject.getRoles().stream().map(role -> role.getRole()).collect(Collectors.joining(":"));
-            stmt.setString(4, roles);
+            stmt.setString(3, roles);
+            stmt.setString(4, valueObject.getId());
             int rowcount = databaseUpdate(stmt);
             if (rowcount == 0) {
                 // System.out.println("Object could not be saved! (PrimaryKey not found)");
