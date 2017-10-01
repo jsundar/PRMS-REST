@@ -145,4 +145,6 @@ public interface RoleDao {
 
 	public abstract Role searchMatching(String role)
 			throws SQLException;
+        
+         public List<Role> getAllRoles() throws SQLException;
 }

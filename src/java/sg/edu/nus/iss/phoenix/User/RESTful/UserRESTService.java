@@ -57,6 +57,42 @@ public class UserRESTService {
        
     }
     
+    @GET
+    @Path("presenter")
+    public Response selectAllPresenter() {
+        Users users = new Users();
+        try {
+            users.setUsers(service.getPresenterList());
+            if(users.getUsers() == null || users.getUsers().isEmpty()) {
+                return Response.status(Response.Status.NOT_FOUND).entity("No Record found..").build();
+            } else {
+                return Response.ok(users, MediaType.APPLICATION_JSON).build();
+            }
+        } catch(SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+       
+    }
+    
+    @GET
+    @Path("producer")
+    public Response selectAllProducer() {
+        Users users = new Users();
+        try {
+            users.setUsers(service.getProducerList());
+            if(users.getUsers() == null || users.getUsers().isEmpty()) {
+                return Response.status(Response.Status.NOT_FOUND).entity("No Record found..").build();
+            } else {
+                return Response.ok(users, MediaType.APPLICATION_JSON).build();
+            }
+        } catch(SQLException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+       
+    }
+    
     @PUT
     @Path("create")
     public Response createAUser(User user) {
@@ -103,14 +139,18 @@ public class UserRESTService {
         }
     }
     
-    @POST
-    @Path("delete")
+   @POST
+    @Path("delete/{userid}")
     public Response deleteUser(@PathParam("userid") String userid) {
         try {
             User user = new User();
             user.setId(userid);
-            service.deleteUser(user);
-            return Response.ok(user, MediaType.APPLICATION_JSON).build();
+            if(service.deleteUser(user)) {
+                return Response.ok(user, MediaType.APPLICATION_JSON).build();
+            } else {
+                return Response.status(Response.Status.NOT_ACCEPTABLE).entity(userid + " is already assigned with programslot.").build();
+            }
+            
         } catch(SQLException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
             return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();

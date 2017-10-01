@@ -46,7 +46,7 @@ public class ScheduleService {
     public String createSchedule(ProgramSlot ps) {
         String statusMessage = "";
         try {
-            statusMessage = validateScedule(ps);
+            //statusMessage = validateScedule(ps);
             if (statusMessage.length() > 0) {
                 return statusMessage;
             }
@@ -59,8 +59,10 @@ public class ScheduleService {
         } catch (SQLException e) {
             e.printStackTrace();
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
+            scheduleDAO.closeConnection();
         }
         return statusMessage;
+        
     }
 
     public String modifySchedule(ProgramSlot ps) {
@@ -79,6 +81,7 @@ public class ScheduleService {
         } catch (SQLException e) {
             e.printStackTrace();
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
+            scheduleDAO.closeConnection();
         }
         return statusMessage;
     }
@@ -170,7 +173,6 @@ public class ScheduleService {
             fromProgramSlot.setStartTime(strStartDate + fromProgramSlot.getStartTime());
 
         }
-
         return fromProgramSlots;
     }
 
@@ -178,7 +180,7 @@ public class ScheduleService {
         String validationStatus = "";
 
         if (ps.getProgram().getName().length() > 0 && ps.getDateOfProgram().length() > 0) {
-            if (scheduleDAO.checkProgramSlotAvailabiltiy(ps, "All")) {
+            if (!scheduleDAO.checkProgramSlotAvailabiltiy(ps, "All")) {
                 return validationStatus;
             } else if (scheduleDAO.checkProgramSlotAvailabiltiy(ps, "")) {
                 return "ProgramSlot overlapping";
@@ -188,10 +190,12 @@ public class ScheduleService {
                 return "Producer not available";
             }
         }
-
         return validationStatus;
     }
-    
-    
+
+
+    public int getAssignedUserToProgramSlot(String userId) throws SQLException {
+        return scheduleDAO.getAssignedUserToProgramSlot(userId);
+    }
 
 }

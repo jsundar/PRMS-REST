@@ -25,11 +25,14 @@ public interface ScheduleDAO {
     public boolean create(ProgramSlot valueObject) throws SQLException;
     
     public boolean update(ProgramSlot valueObject) throws SQLException;
-    
-    
+        
     public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException;
     
     public List<ProgramSlot> searchMatching(String startDate) throws SQLException;
     
     public boolean checkProgramSlotAvailabiltiy(ProgramSlot valueObject, String criteria) throws SQLException; 
+    
+    public abstract int getAssignedUserToProgramSlot(String userId) throws SQLException;
+    
+    public void closeConnection();
 }

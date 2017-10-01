@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.kohsuke.rngom.digested.Main;
 
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
@@ -104,13 +105,31 @@ public class UserDaoImpl implements UserDao {
         return searchResults;
     }
 
-    /*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDao#create(java.sql.
-	 * Connection, sg.edu.nus.iss.phoenix.authenticate.entity.User)
-     */
+    @Override
+    public List<User> loadAllPresenter() throws SQLException {
+
+        String sql = "SELECT * FROM user  WHERE (role = 'Presenter') ";
+        List<User> searchResults = listQuery(this.connection
+                .prepareStatement(sql));
+        for (User u : searchResults) {
+            u.setPassword("");
+        }
+        return searchResults;
+    }
+
+    @Override
+    public List<User> loadAllProducer() throws SQLException {
+
+        String sql = "SELECT * FROM user  WHERE (role = 'Producer') ";
+        List<User> searchResults = listQuery(this.connection
+                .prepareStatement(sql));
+
+        for (User u : searchResults) {
+            u.setPassword("");
+        }
+        return searchResults;
+    }
+
     @Override
     public synchronized void create(User valueObject) throws SQLException {
 
@@ -462,4 +481,19 @@ public class UserDaoImpl implements UserDao {
         }
         return conn;
     }
+
+//    public static void main(String args[]) {
+//        User user = new User();
+//        user.setId("john");
+//        user.setName("john");
+//        
+//        
+//        ArrayList<Role> roleList = new ArrayList<>();
+//        roleList.add(new Role("StationMaster"));
+//        roleList.add(new Role("Presenter"));
+//        user.setRoles(roleList);
+//        String roles;
+//        roles = user.getRoles().stream().map(role -> role.getRole()).collect(Collectors.joining(":"));
+//        System.out.println("Roles " + roles);
+//    }
 }

@@ -44,6 +44,14 @@ public class UserService {
         return udao.loadAll();
     }
     
+    public List<User> getProducerList() throws SQLException {  
+        return udao.loadAllProducer();
+    }
+    
+    public List<User> getPresenterList() throws SQLException {  
+        return udao.loadAllPresenter();
+    }
+    
     public void createUserInfo(User user) throws SQLException{  
         udao.create(user);
     }
@@ -56,8 +64,14 @@ public class UserService {
         udao.save(user);
     }
     
-    public void deleteUser(User user) throws SQLException, NotFoundException {  
-       
+    public boolean deleteUser(User user) throws SQLException, NotFoundException {  
+        boolean isDeleted = true;
+        if (programSlotService.getAssignedUserToProgramSlot(user.getId()) == 0) {
+            udao.delete(user);
+        } else {
+            isDeleted = false;
+        }
+        return isDeleted;
     }
     
 }
