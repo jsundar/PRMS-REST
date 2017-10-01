@@ -51,7 +51,7 @@ public class RadioProgram implements Cloneable, Serializable {
      * Get- and Set-methods for persistent variables. The default
      * behaviour does not make any checks against malformed data,
      * so these might require some manual additions.
-     * @return 
+     * @return String name of radio program
      */
 
     public String getName() {
@@ -83,9 +83,9 @@ public class RadioProgram implements Cloneable, Serializable {
      * set the initial state of this object. Note that this method will
      * directly modify instance variables, without going trough the 
      * individual set-methods.
-     * @param nameIn
-     * @param descriptionIn
-     * @param typicalDurationIn
+     * @param nameIn name
+     * @param descriptionIn description
+     * @param typicalDurationIn duration
      */
 
     public void setAll(String nameIn,
@@ -103,8 +103,8 @@ public class RadioProgram implements Cloneable, Serializable {
      * variables. If hasEqualMapping returns true, it does not mean the objects
      * are the same instance. However it does mean that in that moment, they 
      * are mapped to the same row in database.
-     * @param valueObject
-     * @return 
+     * @param valueObject radio program object
+     * @return boolean true if successful
      */
     public boolean hasEqualMapping(RadioProgram valueObject) {
 
@@ -154,10 +154,10 @@ public class RadioProgram implements Cloneable, Serializable {
      * Note, that this method is different than the clone() which
      * is defined in java.lang.Object. Here, the returned cloned object
      * will also have all its attributes cloned.
-     * @return 
-     * @throws java.lang.CloneNotSupportedException 
+     * @return object of any
+     * @throws CloneNotSupportedException if cannot be cloned
      */
-        @Override
+    @Override
     public Object clone() throws CloneNotSupportedException {
         RadioProgram cloned = new RadioProgram();
 

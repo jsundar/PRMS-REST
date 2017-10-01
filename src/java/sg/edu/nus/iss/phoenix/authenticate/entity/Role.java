@@ -40,7 +40,7 @@ public class Role implements Cloneable, Serializable {
 	 * Get- and Set-methods for persistent variables. The default behaviour does
 	 * not make any checks against malformed data, so these might require some
 	 * manual additions.
-     * @return 
+         * @return string for role
 	 */
 	public String getRole() {
 		return this.role;
@@ -63,8 +63,8 @@ public class Role implements Cloneable, Serializable {
 	 * useful, when all data is available and it is needed to set the initial
 	 * state of this object. Note that this method will directly modify instance
 	 * variales, without going trough the individual set-methods.
-     * @param roleIn
-     * @param accessPrivilegeIn
+         * @param roleIn role of user
+         * @param accessPrivilegeIn privilege of user
 	 */
 
 	public void setAll(String roleIn, String accessPrivilegeIn) {
@@ -78,8 +78,8 @@ public class Role implements Cloneable, Serializable {
 	 * hasEqualMapping returns true, it does not mean the objects are the same
 	 * instance. However it does mean that in that moment, they are mapped to
 	 * the same row in database.
-     * @param valueObject
-     * @return 
+         * @param valueObject representing the role
+         * @return boolean true if successful
 	 */
 	public boolean hasEqualMapping(Role valueObject) {
 

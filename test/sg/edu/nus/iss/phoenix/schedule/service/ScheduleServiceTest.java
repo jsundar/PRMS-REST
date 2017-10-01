@@ -38,12 +38,12 @@ public class ScheduleServiceTest extends TestCase {
     private ScheduleService scheduleService;
     
     @Mock
-    DAOFactoryImpl factoryMock;
+    private DAOFactoryImpl factoryMock;
     
     @Mock
-    ScheduleDAO scheduleDAOMock;
+    private ScheduleDAO scheduleDAOMock;
     
-    ProgramSlot programSlot;
+    private ProgramSlot programSlot;
     
     @Before 
     public void setup() throws Exception {
@@ -68,9 +68,7 @@ public class ScheduleServiceTest extends TestCase {
         
         scheduleService = new ScheduleService();
         factoryMock = Mockito.mock(DAOFactoryImpl.class);
-        scheduleDAOMock = Mockito.mock(ScheduleDAO.class);
-        
-        
+        scheduleDAOMock = Mockito.mock(ScheduleDAO.class); 
     }
     
     @After

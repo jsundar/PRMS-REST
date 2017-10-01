@@ -15,6 +15,7 @@ public interface RoleDao {
 	 * and then this method can be overrided to return extended valueObject.
 	 * NOTE: If you extend the valueObject class, make sure to override the
 	 * clone() method in it!
+         * @return role object
 	 */
 	public abstract Role createValueObject();
 
@@ -23,6 +24,10 @@ public interface RoleDao {
 	 * using given Primary-Key as identifier. This method is just a convenience method 
 	 * for the real load-method which accepts the valueObject as a parameter. Returned
 	 * valueObject will be created using the createValueObject() method.
+         * @param role string
+         * @return role object of role string
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract Role getObject(String role)
 			throws NotFoundException, SQLException;
@@ -37,8 +42,8 @@ public interface RoleDao {
 	 *
 	 * @param valueObject  This parameter contains the class instance to be loaded.
 	 *                     Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void load(Role valueObject)
 			throws NotFoundException, SQLException;
@@ -50,8 +55,8 @@ public interface RoleDao {
 	 * This should only be used when target tables have only small amounts
 	 * of data.
 	 *
-     * @return 
-     * @throws java.sql.SQLException
+         * @return list of roles
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract List<Role> loadAll() throws SQLException;
 
@@ -66,7 +71,7 @@ public interface RoleDao {
 	 * @param valueObject  This parameter contains the class instance to be created.
 	 *                     If automatic surrogate-keys are not used the Primary-key 
 	 *                     field must be set for this to work properly.
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract void create(Role valueObject)
 			throws SQLException;
@@ -80,8 +85,8 @@ public interface RoleDao {
 	 *
 	 * @param valueObject  This parameter contains the class instance to be saved.
 	 *                     Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void save(Role valueObject)
 			throws NotFoundException, SQLException;
@@ -96,8 +101,8 @@ public interface RoleDao {
 	 *
 	 * @param valueObject  This parameter contains the class instance to be deleted.
 	 *                     Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void delete(Role valueObject)
 			throws NotFoundException, SQLException;
@@ -111,7 +116,7 @@ public interface RoleDao {
 	 * than what it was in the deleted object. (Note, the implementation of this method should
 	 * be different with different DB backends.)
 	 *
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract void deleteAll() throws SQLException;
 
@@ -121,8 +126,8 @@ public interface RoleDao {
 	 * If table is empty, the return value is 0. This method should be used before calling
 	 * loadAll, to make sure table has not too many rows.
 	 *
-     * @return 
-     * @throws java.sql.SQLException
+         * @return int success of other
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract int countAll() throws SQLException;
 
@@ -137,8 +142,8 @@ public interface RoleDao {
 	 *
 	 * @param valueObject  This parameter contains the class instance where search will be based.
 	 *                     Primary-key field should not be set.
-     * @return 
-     * @throws java.sql.SQLException 
+         * @return list of roles
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract List<Role> searchMatching(Role valueObject)
 			throws SQLException;

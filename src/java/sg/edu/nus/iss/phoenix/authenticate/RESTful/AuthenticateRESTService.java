@@ -42,7 +42,9 @@ public class AuthenticateRESTService {
     /**
      * Retrieves representation of an instance of
      * sg.edu.nus.iss.phoenix.authenticate.RESTful.GenericResource
-     *
+     * 
+     * @param uname name of user
+     * @param pwd password of user
      * @return an instance of java.lang.String
      */
     @GET
@@ -50,8 +52,7 @@ public class AuthenticateRESTService {
     @Path("/doLogin")
     // Produces JSON as response
     @Produces(MediaType.APPLICATION_JSON)
-    public AuthInfo doLogin(@QueryParam("username") String uname,
-            @QueryParam("password") String pwd) {
+    public AuthInfo doLogin(@QueryParam("username") String uname, @QueryParam("password") String pwd) {
 
         AuthInfo response = new AuthInfo();
         response.setUsername(uname);

@@ -14,6 +14,7 @@ public class NotFoundException extends Exception {
 	/**
 	 * Constructor for NotFoundException. The input message is returned in
 	 * toString() message.
+         * @param msg message to show
 	 */
 	public NotFoundException(String msg) {
 		super(msg);

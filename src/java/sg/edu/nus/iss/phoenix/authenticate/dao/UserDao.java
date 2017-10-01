@@ -15,7 +15,7 @@ public interface UserDao {
 	 * then this method can be overrided to return extended valueObject. NOTE:
 	 * If you extend the valueObject class, make sure to override the clone()
 	 * method in it!
-     * @return 
+         * @return user of object
 	 */
 	public abstract User createValueObject();
 
@@ -25,10 +25,10 @@ public interface UserDao {
 	 * convenience method for the real load-method which accepts the valueObject
 	 * as a parameter. Returned valueObject will be created using the
 	 * createValueObject() method.
-     * @param id
-     * @return 
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException 
-     * @throws java.sql.SQLException 
+         * @param id id of user
+         * @return user user of id
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract User getObject(String id)
 			throws NotFoundException, SQLException;
@@ -45,8 +45,8 @@ public interface UserDao {
 	 * @param valueObject
 	 *            This parameter contains the class instance to be loaded.
 	 *            Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void load(User valueObject)
 			throws NotFoundException, SQLException;
@@ -57,8 +57,8 @@ public interface UserDao {
 	 * consume huge amounts of resources if table has lot's of rows. This should
 	 * only be used when target tables have only small amounts of data.
 	 * 
-     * @return 
-     * @throws java.sql.SQLException
+         * @return list of user
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract List<User> loadAll() throws SQLException;
         public abstract List<User> loadAllPresenter() throws SQLException; 
@@ -75,7 +75,7 @@ public interface UserDao {
 	 *            This parameter contains the class instance to be created. If
 	 *            automatic surrogate-keys are not used the Primary-key field
 	 *            must be set for this to work properly.
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract void create(User valueObject)
 			throws SQLException;
@@ -91,8 +91,8 @@ public interface UserDao {
 	 * @param valueObject
 	 *            This parameter contains the class instance to be saved.
 	 *            Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void save(User valueObject)
 			throws NotFoundException, SQLException;
@@ -109,8 +109,8 @@ public interface UserDao {
 	 * @param valueObject
 	 *            This parameter contains the class instance to be deleted.
 	 *            Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void delete(User valueObject)
 			throws NotFoundException, SQLException;
@@ -126,7 +126,7 @@ public interface UserDao {
 	 * implementation of this method should be different with different DB
 	 * backends.)
 	 * 
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract void deleteAll() throws SQLException;
 
@@ -137,8 +137,8 @@ public interface UserDao {
 	 * value is 0. This method should be used before calling loadAll, to make
 	 * sure table has not too many rows.
 	 * 
-     * @return 
-     * @throws java.sql.SQLException
+         * @return int number of count
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract int countAll() throws SQLException;
 
@@ -151,11 +151,9 @@ public interface UserDao {
 	 * those criteria you specified. Those instance-variables that have NULL
 	 * values are excluded in search-criteria.
 	 * 
-	 * @param valueObject
-	 *            This parameter contains the class instance where search will
-	 *            be based. Primary-key field should not be set.
-     * @return 
-     * @throws java.sql.SQLException 
+	 * @param valueObject This parameter contains the class instance where search will be based. Primary-key field should not be set.
+         * @return  list of user
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract List<User> searchMatching(User valueObject)
 			throws SQLException;

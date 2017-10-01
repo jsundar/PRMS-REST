@@ -28,8 +28,8 @@ public class RoleService {
      
      /***
       * get all role list from DB.
-      * @return
-      * @throws SQLException 
+      * @return list of roles
+      * @throws SQLException throws exception when DB error
       */
      public List<Role> getRoleList() throws SQLException {
          return roleDao.getAllRoles();

@@ -31,8 +31,7 @@ import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 
 /**
  *
- * @author WIN - getProgramSlotList, getWeeklySchedules, copySchedule,
- * prepareSchedulesCopy PRABAKARAN - createSchedule & modifySchedule
+ * @author WIN and PRABAKARAN
  *
  */
 public class ScheduleDAOImpl implements ScheduleDAO {
@@ -365,8 +364,8 @@ public class ScheduleDAOImpl implements ScheduleDAO {
      * sure that if cache is used, it will reset when data changes.
      *
      * @param stmt This parameter contains the SQL statement to be excuted.
-     * @return
-     * @throws java.sql.SQLException
+     * @return int success of fail
+     * @throws SQLException throws exception when there is DB error
      */
     protected int databaseUpdate(PreparedStatement stmt) throws SQLException {
 

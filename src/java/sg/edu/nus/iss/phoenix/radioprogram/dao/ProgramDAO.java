@@ -14,7 +14,7 @@ public interface ProgramDAO {
 	 * create new value object instance. The reason why this method exists is
 	 * that sometimes the programmer may want to extend also the valueObject and
 	 * then this method can be over-rided to return extended valueObject.
-     * @return 
+         * @return radio program object
 	 */
 	public abstract RadioProgram createValueObject();
 
@@ -24,10 +24,10 @@ public interface ProgramDAO {
 	 * convenience method for the real load-method which accepts the valueObject
 	 * as a parameter. Returned valueObject will be created using the
 	 * createValueObject() method.
-     * @param name
-     * @return 
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException 
-     * @throws java.sql.SQLException 
+         * @param name of radio program
+         * @return radio program object
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract RadioProgram getObject(String name)
 			throws NotFoundException, SQLException;
@@ -44,8 +44,8 @@ public interface ProgramDAO {
 	 * @param valueObject
 	 *            This parameter contains the class instance to be loaded.
 	 *            Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void load(RadioProgram valueObject)
 			throws NotFoundException, SQLException;
@@ -56,8 +56,8 @@ public interface ProgramDAO {
 	 * consume huge amounts of resources if table has lot's of rows. This should
 	 * only be used when target tables have only small amounts of data.
 	 * 
-     * @return 
-     * @throws java.sql.SQLException
+         * @return list of radio program
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract List<RadioProgram> loadAll() throws SQLException;
 
@@ -73,7 +73,7 @@ public interface ProgramDAO {
 	 *            This parameter contains the class instance to be created. If
 	 *            automatic surrogate-keys are not used the Primary-key field
 	 *            must be set for this to work properly.
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract void create(RadioProgram valueObject) throws SQLException;
 
@@ -88,8 +88,8 @@ public interface ProgramDAO {
 	 * @param valueObject
 	 *            This parameter contains the class instance to be saved.
 	 *            Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void save(RadioProgram valueObject)
 			throws NotFoundException, SQLException;
@@ -106,8 +106,8 @@ public interface ProgramDAO {
 	 * @param valueObject
 	 *            This parameter contains the class instance to be deleted.
 	 *            Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	public abstract void delete(RadioProgram valueObject)
 			throws NotFoundException, SQLException;
@@ -125,7 +125,7 @@ public interface ProgramDAO {
 	 * 
 	 * @param conn
 	 *            This method requires working database connection.
-     * @throws java.sql.SQLException
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract void deleteAll(Connection conn) throws SQLException;
 
@@ -136,8 +136,8 @@ public interface ProgramDAO {
 	 * value is 0. This method should be used before calling loadAll, to make
 	 * sure table has not too many rows.
 	 * 
-     * @return 
-     * @throws java.sql.SQLException
+         * @return int count
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract int countAll() throws SQLException;
 
@@ -153,8 +153,8 @@ public interface ProgramDAO {
 	 * @param valueObject
 	 *            This parameter contains the class instance where search will
 	 *            be based. Primary-key field should not be set.
-     * @return 
-     * @throws java.sql.SQLException 
+         * @return list of radio program
+         * @throws SQLException throws exception when there is DB error
 	 */
 	public abstract List<RadioProgram> searchMatching(RadioProgram valueObject)
 			throws SQLException;
