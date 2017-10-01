@@ -18,21 +18,21 @@ import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
  *
  * @author WongCheeVui
  */
-public class UserTest {
+public class UserServiceTest {
     
     @Before 
-    public void PreUsertest()
+    public void PreUserServiceTest()
     {
 
     }
     
      /**
-     * Usertest_Create-method. 
+     * UserServiceTest_Create-method. 
      * This is Junit test to Create User to database
      *
      */
     @Test
-    public void Usertest_Create()
+    public void UserServiceTest_Create()
     {
         User user = new User();
         user.setId("1234");
@@ -50,17 +50,17 @@ public class UserTest {
             fail();
             System.out.println(e);
         }
-        Usertest_Edit();
-        Usertest_Delete();
+        UserServiceTest_Edit();
+        UserServiceTest_Delete();
     }
     
      /**
-     * Usertest_Retrieve-method. 
+     * UserServiceTest_Retrieve-method. 
      * This is Junit test to retrieve all Users from database
      *
      */
     @Test
-    public void Usertest_Retrieve()
+    public void UserServiceTest_Retrieve()
     {
         UserService service = new UserService(); 
         List<User> users = null;
@@ -73,12 +73,12 @@ public class UserTest {
     }    
     
      /**
-     * Usertest_RetrievePresenter-method. 
+     * UserServiceTest_RetrievePresenter-method. 
      * This is Junit test to retrieve all Users with Presenter Role from database
      *
      */
     @Test
-    public void Usertest_RetrievePresenter()
+    public void UserServiceTest_RetrievePresenter()
     {
         UserService service = new UserService(); 
         List<User> users = null;
@@ -91,12 +91,12 @@ public class UserTest {
     }
  
      /**
-     * Usertest_RetrieveProducer-method. 
+     * UserServiceTest_RetrieveProducer-method. 
      * This is Junit test to retrieve all Users with Producer Role from database
      *
      */
     @Test
-    public void Usertest_RetrieveProducer()
+    public void UserServiceTest_RetrieveProducer()
     {
         UserService service = new UserService(); 
         List<User> users = null;
@@ -109,11 +109,11 @@ public class UserTest {
     }
         
      /**
-     * Usertest_Edit-method. 
+     * UserServiceTest_Edit-method. 
      * This is Junit test to test functionality to edit user profile in database
      *
      */
-    public void Usertest_Edit()
+    public void UserServiceTest_Edit()
     {
         User user = new User();
         user.setId("1234");
@@ -136,11 +136,11 @@ public class UserTest {
     }
     
      /**
-     * Usertest_Delete-method. 
+     * UserServiceTest_Delete-method. 
      * This is Junit test to delete user profile in database
      *
      */
-    public void Usertest_Delete()
+    public void UserServiceTest_Delete()
     {
         User user = new User();
         user.setId("1234");
