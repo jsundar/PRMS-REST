@@ -108,13 +108,13 @@ public class ScheduleService {
         System.out.println(sdf.format(startWeek.getTime()));
 
         for (int i = 1; i <= 52; i++) {
-            startWeek.add(Calendar.DAY_OF_MONTH, 7);
-
             WeeklySchedule weeklySchedule = new WeeklySchedule();
             weeklySchedule.setStartDate(sdf.format(startWeek.getTime()));
             System.out.println("Week " + i + " " + sdf.format(startWeek.getTime()));
             weeklySchedule.setAssignedBy("Station Manager");
             weeklySchedules.add(weeklySchedule);
+            
+            startWeek.add(Calendar.DAY_OF_MONTH, 7);
         }
 
         return weeklySchedules;
@@ -191,5 +191,7 @@ public class ScheduleService {
 
         return validationStatus;
     }
+    
+    
 
 }
