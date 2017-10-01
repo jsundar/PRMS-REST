@@ -26,6 +26,11 @@ public class RoleService {
          this.roleDao = new RoleDaoImpl();
      }
      
+     /***
+      * get all role list from DB.
+      * @return
+      * @throws SQLException 
+      */
      public List<Role> getRoleList() throws SQLException {
          return roleDao.getAllRoles();
      }

@@ -13,7 +13,7 @@ import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
  * @author JOHN
  */
 public class Roles {
-    
+
     private List<Role> roles;
 
     public List<Role> getRoles() {
@@ -23,5 +23,5 @@ public class Roles {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
-    
+
 }

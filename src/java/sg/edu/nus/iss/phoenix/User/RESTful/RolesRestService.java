@@ -11,46 +11,43 @@ import javax.ws.rs.core.Response;
 import sg.edu.nus.iss.phoenix.User.service.RoleService;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
+ * Provide User Role related service
+ * 
  */
-
 /**
  *
  * @author JOHN
  */
-
 @Path("/roles")
 @RequestScoped
 public class RolesRestService {
-    
-     private static final Logger logger = 
-			Logger.getLogger(RolesRestService.class.getName());
-     
+
+    private static final Logger logger
+            = Logger.getLogger(RolesRestService.class.getName());
+
     private RoleService roleService;
-    
-     
-     public RolesRestService(){
-         roleService = new RoleService();
-     }
-     
+
+    public RolesRestService() {
+        roleService = new RoleService();
+    }
+
     @GET
     @Path("selectall")
     public Response selectAllUser() {
         Roles roles = new Roles();
         try {
             roles.setRoles(roleService.getRoleList());
-            if(roles.getRoles() == null || roles.getRoles().isEmpty()) {
+            if (roles.getRoles() == null || roles.getRoles().isEmpty()) {
                 return Response.status(Response.Status.NOT_FOUND).entity("No Record found..").build();
             } else {
                 return Response.ok(roles, MediaType.APPLICATION_JSON).build();
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
             return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-       
+
     }
-    
+
 }
