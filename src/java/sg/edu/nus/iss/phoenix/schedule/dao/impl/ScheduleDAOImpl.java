@@ -229,6 +229,11 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     @Override
     public List<ProgramSlot> searchMatching(String startDate) throws SQLException {
         List<ProgramSlot> ret = new ArrayList<>();
+        
+        DAOFactory daoFactory = new DAOFactoryImpl();
+        UserDao userDAO = daoFactory.getUserDAO(connection);
+        ProgramDAO programDAO = daoFactory.getProgramDAO(connection);
+
 
         String query = "SELECT id, duration, dateOfProgram, DATE_FORMAT(startTime,  '%H:%i') startTime, "
                 + "`program-name`, presenter, producer FROM `program-slot` "
@@ -238,10 +243,6 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         ResultSet rs = null;
         try {
             pstmt = connection.prepareStatement(query);
-
-            DAOFactory daoFactory = new DAOFactoryImpl();
-            UserDao userDAO = daoFactory.getUserDAO();
-            ProgramDAO programDAO = daoFactory.getProgramDAO();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             Date sDate = sdf.parse(startDate);
@@ -269,6 +270,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                     currentObject.setPresenter(userDAO.getObject(currentObject.getPresenter().getId()));
                     currentObject.setProducer(userDAO.getObject(currentObject.getProducer().getId()));
                     currentObject.setProgram(programDAO.getObject(currentObject.getProgram().getName()));
+                    
                 } catch (NotFoundException e) {
                     Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, e);
                 }
@@ -290,6 +292,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 pstmt.close();
                 pstmt = null;
             }
+            
+            userDAO.closeConnection();
+            
   
         }
 

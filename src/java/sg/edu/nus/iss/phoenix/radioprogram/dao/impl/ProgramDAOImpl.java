@@ -23,6 +23,14 @@ import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 public class ProgramDAOImpl implements ProgramDAO {
 
 	Connection connection;
+        
+        public ProgramDAOImpl() {
+        
+        }
+        
+        public ProgramDAOImpl(Connection conn) {
+            this.connection = connection;
+        }
 
 	/* (non-Javadoc)
 	 * @see sg.edu.nus.iss.phoenix.radioprogram.dao.impl.ProgramDAO#createValueObject()

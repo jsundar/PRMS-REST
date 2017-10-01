@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -139,7 +140,7 @@ public class UserInfoRESTService {
         }
     }
     
-   @POST
+    @DELETE
     @Path("delete/{userid}")
     public Response deleteUser(@PathParam("userid") String userid) {
         try {

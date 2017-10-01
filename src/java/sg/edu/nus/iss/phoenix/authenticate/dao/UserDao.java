@@ -160,4 +160,9 @@ public interface UserDao {
 
 	public abstract User searchMatching(String uid)
 			throws SQLException;
+        
+        
+        public abstract void closeConnection();
+        
+        
 }

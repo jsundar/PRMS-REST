@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.phoenix.core.dao;
 
+import java.sql.Connection;
 import sg.edu.nus.iss.phoenix.authenticate.dao.RoleDao;
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.dao.impl.RoleDaoImpl;
@@ -18,7 +19,6 @@ public class DAOFactoryImpl implements DAOFactory {
 
     @Override
     public UserDao getUserDAO() {
-        // TODO Auto-generated method stub
         return userDAO;
     }
 
@@ -38,6 +38,16 @@ public class DAOFactoryImpl implements DAOFactory {
     public ScheduleDAO getScheduleDAO() {
         // TODO Auto-generated method stub
         return scheduleDAO;
+    }
+
+    @Override
+    public ProgramDAO getProgramDAO(Connection conn) {
+        return new ProgramDAOImpl(conn);
+    }
+
+    @Override
+    public UserDao getUserDAO(Connection conn) {
+        return new UserDaoImpl(conn);
     }
 
 }

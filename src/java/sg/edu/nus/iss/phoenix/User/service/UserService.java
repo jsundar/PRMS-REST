@@ -6,6 +6,7 @@
 package sg.edu.nus.iss.phoenix.User.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -44,7 +45,16 @@ public class UserService {
     * @throws SQLException throws exception when there is DB error
     */
     public List<User> getUserList() throws SQLException {  
-        return udao.loadAll();
+        List<User> ret = new ArrayList<>();
+        
+        try {
+            ret = udao.loadAll();
+        } catch (SQLException e) {
+           throw e;
+        } finally {
+            udao.closeConnection();
+        }
+        return ret;
     }
     
     /**
@@ -54,7 +64,17 @@ public class UserService {
     * @throws java.sql.SQLException throws exception when there is DB error
     */
     public List<User> getProducerList() throws SQLException {  
-        return udao.loadAllProducer();
+        List<User> ret = new ArrayList<>();
+        
+        try {
+            ret = udao.loadAllProducer();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            udao.closeConnection();
+        }
+       
+        return ret;
     }
     
     /**
@@ -64,7 +84,16 @@ public class UserService {
     * @throws java.sql.SQLException throws exception when there is DB error
     */
     public List<User> getPresenterList() throws SQLException {  
-        return udao.loadAllPresenter();
+        List<User> ret = new ArrayList<>();
+        
+        try {
+            ret = udao.loadAllPresenter();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            udao.closeConnection();
+        }
+        return ret;
     }
     
     /**
@@ -74,7 +103,14 @@ public class UserService {
     * @throws java.sql.SQLException throws exception when there is DB error
     */
     public void createAUser(User user) throws SQLException{  
-        udao.create(user);
+        
+        try {
+            udao.create(user);
+        } catch (SQLException e) {
+        } finally {
+            udao.closeConnection();
+        }
+        
     }
     
     /**
@@ -85,7 +121,13 @@ public class UserService {
     * @throws NotFoundException throws exception when there is not found error
     */
     public void loadUser(User user) throws SQLException, NotFoundException {  
-        udao.load(user);
+        try {
+            udao.load(user);
+        } catch (SQLException | NotFoundException e) {
+            throw e;
+        } finally {
+            udao.closeConnection();
+        }
     }
     
     /**
@@ -96,7 +138,14 @@ public class UserService {
     * @throws NotFoundException throws exception when there is not found error
     */
     public void updateUser(User user) throws SQLException, NotFoundException {  
-        udao.save(user);
+       try {
+            udao.save(user);
+        } catch (SQLException | NotFoundException e) {
+            throw e;
+        } finally {
+            udao.closeConnection();
+        }
+    
     }
     
     /**
@@ -109,11 +158,19 @@ public class UserService {
     */
     public boolean deleteUser(User user) throws SQLException, NotFoundException {  
         boolean isDeleted = true;
-        if (programSlotService.getAssignedUserToProgramSlot(user.getId()) == 0) {
-            udao.delete(user);
-        } else {
-            isDeleted = false;
+        
+        try {
+            if (programSlotService.getAssignedUserToProgramSlot(user.getId()) == 0) {
+               udao.delete(user);
+            } else {
+                isDeleted = false;
+            }
+        } catch (SQLException | NotFoundException e) {
+            throw e;
+        } finally {
+            udao.closeConnection();
         }
+        
         return isDeleted;
     }
     

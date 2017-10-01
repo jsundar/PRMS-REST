@@ -34,6 +34,10 @@ public class UserDaoImpl implements UserDao {
         // TODO Auto-generated constructor stub
         connection = openConnection();
     }
+    
+    public UserDaoImpl(Connection conn) {
+        this.connection = conn;
+    }
 
     /*
 	 * (non-Javadoc)
@@ -481,6 +485,17 @@ public class UserDaoImpl implements UserDao {
 
         }
         return conn;
+    }
+    
+    @Override
+    public void closeConnection() {
+        try {
+            if(connection != null && !connection.isClosed())
+            this.connection.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            // e.printStackTrace();
+        }
     }
 
 //    public static void main(String args[]) {

@@ -104,6 +104,7 @@ public class RoleDaoImpl implements RoleDao {
         List<Role> searchResults = listQuery(this.connection
                 .prepareStatement(sql));
 
+        closeConnection();
         return searchResults;
     }
 
@@ -332,6 +333,7 @@ public class RoleDaoImpl implements RoleDao {
                     .toString()));
         }
 
+        closeConnection();
         return searchResults;
     }
 
@@ -400,7 +402,7 @@ public class RoleDaoImpl implements RoleDao {
 
         ArrayList<Role> searchResults = new ArrayList<>();
         ResultSet result = null;
-        connection = openConnection();
+      
         try {
             result = stmt.executeQuery();
 
@@ -420,7 +422,7 @@ public class RoleDaoImpl implements RoleDao {
             if (stmt != null) {
                 stmt.close();
             }
-            closeConnection();
+            
         }
 
         return (List<Role>) searchResults;
