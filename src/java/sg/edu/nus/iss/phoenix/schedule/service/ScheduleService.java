@@ -29,7 +29,10 @@ import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 
 /**
  *
- * @author JOHN
+ * @author 
+ *      WIN - getProgramSlotList, getWeeklySchedules, copySchedule, prepareSchedulesCopy
+ *      PRABAKARAN - createSchedule & modifySchedule
+ * 
  */
 public class ScheduleService {
 
@@ -42,11 +45,24 @@ public class ScheduleService {
         scheduleDAO = factory.getScheduleDAO();
     }
 
-    @SuppressWarnings("CallToPrintStackTrace")
+    /**
+     * create-method. This will create new program-slot in database according to
+     * supplied valueObject contents. Make sure that values for all NOT NULL
+     * columns are correctly specified. Also, if this table does not use
+     * automatic surrogate-keys the primary-key must be specified. After INSERT
+     * command this method will read the generated primary-key back to
+     * valueObject if automatic surrogate-keys were used.
+     *
+     * @param valueObject This parameter contains the class instance to be
+     * created. Automatic surrogate-keys are used the Primary-key field must be
+     * set for this to work properly.
+     * @return createStatus
+     * @throws java.sql.SQLException
+     */
     public String createSchedule(ProgramSlot ps) {
         String statusMessage = "";
         try {
-            //statusMessage = validateScedule(ps);
+            statusMessage = validateScedule(ps);
             if (statusMessage.length() > 0) {
                 return statusMessage;
             }
@@ -59,12 +75,27 @@ public class ScheduleService {
         } catch (SQLException e) {
             e.printStackTrace();
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
-            scheduleDAO.closeConnection();
+        }
+        finally {
+             scheduleDAO.closeConnection();
         }
         return statusMessage;
         
     }
 
+    /**
+     * update-method. This method will save the current state of valueObject to
+     * database. Save can not be used to create new instances in database, so
+     * upper layer must make sure that the primary-key is correctly specified.
+     * Primary-key will indicate which instance is going to be updated in
+     * database. If save can not find matching row, NotFoundException will be
+     * thrown.
+     *
+     * @param valueObject This parameter contains the class instance to be
+     * updated. Primary-key field must be set for this to work properly.
+     * @return updateStatus
+     * @throws java.sql.SQLException
+     */
     public String modifySchedule(ProgramSlot ps) {
         String statusMessage = "";
         try {
@@ -81,7 +112,9 @@ public class ScheduleService {
         } catch (SQLException e) {
             e.printStackTrace();
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
-            scheduleDAO.closeConnection();
+        }
+        finally {
+             scheduleDAO.closeConnection();
         }
         return statusMessage;
     }
@@ -89,7 +122,21 @@ public class ScheduleService {
     public List<ProgramSlot> getProgramSlotList(String startDate) throws SQLException {
         return scheduleDAO.searchMatching(startDate);
     }
-
+    
+    /**
+     * getWeeklySchedules-Method. This method provides searching capability to get
+     * matching valueObjects from database. It works by searching all objects
+     * that match permanent instance variables of given object. Upper layer
+     * should use this by setting some parameters in valueObject and then call
+     * searchMatching. The result will be 0-N objects in a List, all matching
+     * those criteria you specified. Those instance-variables that have NULL
+     * values are excluded in search-criteria.
+     *
+     * @param valueObject This parameter contains the class instance where
+     * search will be based. Primary-key field should not be set.
+     * @return
+     * @throws java.sql.SQLException
+     */
     public List<WeeklySchedule> getWeeklySchedules() {
         List<WeeklySchedule> weeklySchedules = new ArrayList<>();
 
@@ -123,6 +170,20 @@ public class ScheduleService {
         return weeklySchedules;
     }
 
+    /**
+     * copySchedule-method. This will create new program-slot in database according to
+     * supplied valueObject contents. Make sure that values for all NOT NULL
+     * columns are correctly specified. Also, if this table does not use
+     * automatic surrogate-keys the primary-key must be specified. After INSERT
+     * command this method will read the generated primary-key back to
+     * valueObject if automatic surrogate-keys were used.
+     *
+     * @param String This parameter contains the startedate and enddate to 
+     * create weekly schedule. Automatic surrogate-keys are used the Primary-key field must be
+     * set for this to work properly.
+     * @return createStatus
+     * @throws java.sql.SQLException
+     */
     public boolean copySchedule(String fromDate, String toDate) {
         boolean result = false;
 
@@ -151,6 +212,21 @@ public class ScheduleService {
         return result;
     }
 
+    /**
+     * prepareSchedulesCopy-method. This will create new program-slot in database according to
+     * supplied valueObject contents. Make sure that values for all NOT NULL
+     * columns are correctly specified. Also, if this table does not use
+     * automatic surrogate-keys the primary-key must be specified. After INSERT
+     * command this method will read the generated primary-key back to
+     * valueObject if automatic surrogate-keys were used.
+     *
+     * @param List<ProgramSlot> This parameter contains the list of ProgramSlots to 
+     * create weekly schedule. Automatic surrogate-keys are used the Primary-key field must be
+     * set for this to work properly.
+     * @return List<ProgramSlot>
+     *      returns all the 
+     * @throws java.sql.SQLException
+     */
     private List<ProgramSlot> prepareSchedulesCopy(List<ProgramSlot> fromProgramSlots) throws ParseException {
 
         for (ProgramSlot fromProgramSlot : fromProgramSlots) {

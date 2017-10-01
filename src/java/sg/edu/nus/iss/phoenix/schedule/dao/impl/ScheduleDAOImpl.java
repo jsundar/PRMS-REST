@@ -1,4 +1,4 @@
-	/*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -31,7 +31,9 @@ import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 
 /**
  *
- * @author JOHN
+ * @author WIN - getProgramSlotList, getWeeklySchedules, copySchedule,
+ * prepareSchedulesCopy PRABAKARAN - createSchedule & modifySchedule
+ *
  */
 public class ScheduleDAOImpl implements ScheduleDAO {
 
@@ -48,11 +50,24 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         this.connection = openConnection();
     }
 
+    /*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.ScheduleDAO#createValueObject()
+     */
     @Override
     public ProgramSlot createValueObject() {
         return new ProgramSlot();
     }
 
+    /*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.ScheduleDAO#getObject(java.sql
+	 * .Connection, String)
+     */
     @Override
     public ProgramSlot getObject(String dateOfProgram) throws NotFoundException, SQLException {
 
@@ -60,6 +75,13 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
     }
 
+    /*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.ScheduleDAO#create(java.sql.Connection
+	 * , sg.edu.nus.iss.phoenix.authenticate.entity.ProgramSlot)
+     */
     @Override
     public boolean create(ProgramSlot valueObject) throws SQLException {
 
@@ -90,6 +112,13 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         return !statusFlag;
     }
 
+    /*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.ScheduleDAO#update(java.sql.Connection
+	 * , sg.edu.nus.iss.phoenix.authenticate.entity.ProgramSlot)
+     */
     @Override
     public boolean update(ProgramSlot valueObject) throws SQLException {
         String sql = "UPDATE `phoenix`.`program-slot` SET duration = ?, dateOfProgram = ?, startTime = ?, `program-name` = ?, presenter = ?, producer = ? WHERE ( id = ? ) ";
@@ -124,10 +153,12 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         return !statusFlag;
     }
 
-    /**
-     *
-     * @return @throws SQLException
-     * @throws NotFoundException
+    /*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.ScheduleDAO#loadAll(java.sql
+	 * .Connection)
      */
     @Override
     public List<ProgramSlot> loadAll() throws SQLException, NotFoundException {
@@ -161,11 +192,25 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
     }
 
+    /*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.ScheduleDAO#delete(java.sql.Connection
+	 * , sg.edu.nus.iss.phoenix.authenticate.entity.ProgramSlot)
+     */
     @Override
     public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+     /*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.ScheduleDAO#searchMatching(java.sql.Connection
+	 * , String)
+     */
     @Override
     public List<ProgramSlot> searchMatching(String startDate) throws SQLException {
         List<ProgramSlot> ret = new ArrayList<>();
