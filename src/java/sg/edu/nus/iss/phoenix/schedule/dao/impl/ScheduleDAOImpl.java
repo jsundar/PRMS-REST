@@ -200,8 +200,24 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	 * , sg.edu.nus.iss.phoenix.authenticate.entity.ProgramSlot)
      */
     @Override
-    public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean delete(ProgramSlot valueObject) throws NotFoundException, SQLException {
+        boolean result = false;
+        
+        PreparedStatement pstmt = null;
+        
+        try {
+            String sql = "DELETE FROM `program-slot` WHERE id = ? ";
+            pstmt = connection.prepareStatement(sql);
+            
+            pstmt.setInt(1, valueObject.getId());
+            pstmt.executeUpdate();
+            Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.INFO, "Deleted Successfully " + valueObject.getId());
+       
+            result = true;
+        } catch (Exception e) {
+            Logger.getLogger(ScheduleDAOImpl.class.getName()).log(Level.SEVERE, null, e);
+        } 
+        return result;
     }
 
      /*
@@ -222,7 +238,6 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            connection = openConnection();
             pstmt = connection.prepareStatement(query);
 
             DAOFactory daoFactory = new DAOFactoryImpl();
@@ -276,8 +291,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 pstmt.close();
                 pstmt = null;
             }
-
-            closeConnection();
+  
         }
 
         return ret;

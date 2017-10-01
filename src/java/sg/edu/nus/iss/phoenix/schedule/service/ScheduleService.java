@@ -12,20 +12,18 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.firstDayOfNextMonth;
 import static java.time.temporal.TemporalAdjusters.nextOrSame;
-import java.time.temporal.TemporalAmount;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
-import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.entity.WeeklySchedule;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 /**
  *
@@ -62,6 +60,9 @@ public class ScheduleService {
     public String createSchedule(ProgramSlot ps) {
         String statusMessage = "";
         try {
+            // Adding second for the database operation
+            ps.setStartTime(ps.getStartTime() + ":00");
+            
             statusMessage = validateScedule(ps);
             if (statusMessage.length() > 0) {
                 return statusMessage;
@@ -99,6 +100,9 @@ public class ScheduleService {
     public String modifySchedule(ProgramSlot ps) {
         String statusMessage = "";
         try {
+            // Adding second for the database operation
+            ps.setStartTime(ps.getStartTime() + ":00");
+            
             statusMessage = validateScedule(ps);
             if (statusMessage.length() > 0) {
                 return statusMessage;
@@ -118,9 +122,34 @@ public class ScheduleService {
         }
         return statusMessage;
     }
+    
+    public boolean deleteSchdule(int id) {
+        boolean result = false;
+        
+        try {
+           ProgramSlot ps = new ProgramSlot();
+           ps.setId(id);
+           result = scheduleDAO.delete(ps);
+        } catch (Exception e) {
+            Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            scheduleDAO.closeConnection();
+        }
+        return result;
+    }
 
     public List<ProgramSlot> getProgramSlotList(String startDate) throws SQLException {
-        return scheduleDAO.searchMatching(startDate);
+       
+       List<ProgramSlot> programSlots = new ArrayList<>();
+       try {
+            programSlots =  scheduleDAO.searchMatching(startDate);
+       } catch(Exception e) {
+           Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
+       } finally {
+           scheduleDAO.closeConnection();
+       }
+       
+       return programSlots;
     }
     
     /**
@@ -155,12 +184,10 @@ public class ScheduleService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-        System.out.println(sdf.format(startWeek.getTime()));
-
         for (int i = 1; i <= 52; i++) {
             WeeklySchedule weeklySchedule = new WeeklySchedule();
             weeklySchedule.setStartDate(sdf.format(startWeek.getTime()));
-            System.out.println("Week " + i + " " + sdf.format(startWeek.getTime()));
+
             weeklySchedule.setAssignedBy("Station Manager");
             weeklySchedules.add(weeklySchedule);
             
@@ -188,18 +215,24 @@ public class ScheduleService {
         boolean result = false;
 
         try {
-            List<ProgramSlot> fromProgramSlots = getProgramSlotList(fromDate);
+            List<ProgramSlot> fromProgramSlots = scheduleDAO.searchMatching(fromDate);
 
-            List<ProgramSlot> toProgramSlots = getProgramSlotList(toDate);
+            List<ProgramSlot> toProgramSlots = scheduleDAO.searchMatching(toDate);
             
             // Checking Duplicate
             if (toProgramSlots.isEmpty()) {
-                fromProgramSlots = prepareSchedulesCopy(fromProgramSlots);
+                fromProgramSlots = prepareSchedulesCopy(fromProgramSlots, fromDate, toDate);
                 
                 for (ProgramSlot programSlot : fromProgramSlots) {
-                    createSchedule(programSlot);
+                    //createSchedule(programSlot);
+                    result = scheduleDAO.create(programSlot);
+                    
+                    if (!result) {
+                        break;
+                    }
                 }
-                result = true;
+                
+                
             } else {
                 result = false;
             }
@@ -207,6 +240,8 @@ public class ScheduleService {
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, e);
         } catch (ParseException ex) {
             Logger.getLogger(ScheduleService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            scheduleDAO.closeConnection();
         }
 
         return result;
@@ -227,26 +262,32 @@ public class ScheduleService {
      *      returns all the 
      * @throws java.sql.SQLException
      */
-    private List<ProgramSlot> prepareSchedulesCopy(List<ProgramSlot> fromProgramSlots) throws ParseException {
+    private List<ProgramSlot> prepareSchedulesCopy(List<ProgramSlot> fromProgramSlots, String from, String to) throws ParseException {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdfToInsert = new SimpleDateFormat("yyyy-MM-dd");
+        
+        Date fromDate = sdf.parse(from);
+        Date toDate = sdf.parse(to);
+        
+        long diff = toDate.getTime() - fromDate.getTime();
+        
+        long dayDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        
+            
         for (ProgramSlot fromProgramSlot : fromProgramSlots) {
-            // add 7 days
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-
             Date sDate = sdf.parse(fromProgramSlot.getDateOfProgram());
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(sDate);
-            cal.add(Calendar.DAY_OF_MONTH, 7);
+            cal.add(Calendar.DAY_OF_MONTH, (int)dayDiff);
 
             Date eDate = cal.getTime();
 
-            String strStartDate = sdf.format(sDate);
-
-            String strEndDate = sdf.format(eDate);
+            String strEndDate = sdfToInsert.format(eDate);
 
             fromProgramSlot.setDateOfProgram(strEndDate);
-            fromProgramSlot.setStartTime(strStartDate + fromProgramSlot.getStartTime());
+            fromProgramSlot.setStartTime(strEndDate + " " +fromProgramSlot.getStartTime() + ":00");
 
         }
         return fromProgramSlots;
@@ -272,6 +313,14 @@ public class ScheduleService {
 
     public int getAssignedUserToProgramSlot(String userId) throws SQLException {
         return scheduleDAO.getAssignedUserToProgramSlot(userId);
+    }
+    
+    public static void main(String[] args) {
+        String fromDate = "20170101";
+        String toDate = "20170122";
+        
+        ScheduleService service =  new ScheduleService();
+        service.copySchedule(fromDate, toDate);
     }
 
 }

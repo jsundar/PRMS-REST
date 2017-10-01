@@ -84,6 +84,20 @@ public class ScheduleProgramRESTService {
         String statusMessage = scheduleService.modifySchedule(ps);
         return Response.status(Response.Status.OK).entity(statusMessage).build();
     }
+    
+    
+    @DELETE
+    @Path("/{id}")
+    public Response deleteSchdeule(@PathParam("id") String id) {
+        boolean status = scheduleService.deleteSchdule(Integer.parseInt(id));
+        if (status) {
+            Logger.getLogger(ScheduleProgramRESTService.class.getName()).log(Level.INFO, "Deleted Successfully");
+            return Response.status(Response.Status.OK).entity("Program Slot deleted successfully").build();
+        } else {
+            Logger.getLogger(ScheduleProgramRESTService.class.getName()).log(Level.INFO, "Deletipon Failed");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @POST
     @Path("/copy")
@@ -94,7 +108,7 @@ public class ScheduleProgramRESTService {
         if (status) {
             return Response.status(Response.Status.OK).entity("Schedule copied successfully").build();
         } else {
-            return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.serverError().status(Response.Status.OK).entity("The destination schdule is duplicate.").build();
         }
 
     }

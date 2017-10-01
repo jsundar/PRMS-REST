@@ -98,7 +98,7 @@ public interface ScheduleDAO {
      * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
      * @throws java.sql.SQLException
      */
-    public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException;
+    public boolean delete(ProgramSlot valueObject) throws NotFoundException, SQLException;
 
     /**
      * searchMatching-Method. This method provides searching capability to get
