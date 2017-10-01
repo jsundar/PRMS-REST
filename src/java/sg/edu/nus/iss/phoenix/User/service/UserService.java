@@ -44,6 +44,14 @@ public class UserService {
         return udao.loadAll();
     }
     
+    public List<User> getProducerList() throws SQLException {  
+        return udao.loadAllProducer();
+    }
+    
+    public List<User> getPresenterList() throws SQLException {  
+        return udao.loadAllPresenter();
+    }
+    
     public void createUserInfo(User user) throws SQLException{  
         udao.create(user);
     }
