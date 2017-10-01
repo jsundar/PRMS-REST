@@ -12,7 +12,7 @@ import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
 /**
  *
- * @author WIN & PRABA
+ * @author WIN and PRABA
  */
 public interface ScheduleDAO {
 
@@ -35,10 +35,10 @@ public interface ScheduleDAO {
      * as a parameter. Returned valueObject will be created using the
      * createValueObject() method.
      *
-     * @param id
-     * @return
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+     * @param id id of program slot
+     * @return ProgramSlot ProgramSlot object
+     * @throws SQLException throws exception when there is DB error
+     * @throws NotFoundException throws exception when there is not found error
      */
     public ProgramSlot getObject(String id) throws NotFoundException, SQLException;
 
@@ -48,8 +48,9 @@ public interface ScheduleDAO {
      * consume huge amounts of resources if table has lot's of rows. This should
      * only be used when target tables have only small amounts of data.
      *
-     * @return
-     * @throws java.sql.SQLException
+     * @return list of ProgramSlot
+     * @throws SQLException throws exception when there is DB error
+     * @throws NotFoundException throws exception when there is not found error
      */
     public List<ProgramSlot> loadAll() throws SQLException, NotFoundException;
 
@@ -65,7 +66,7 @@ public interface ScheduleDAO {
      * created. Automatic surrogate-keys are used the Primary-key field must be
      * set for this to work properly.
      * @return createStatus
-     * @throws java.sql.SQLException
+     * @throws SQLException throws exception when there is DB error
      */
     public boolean create(ProgramSlot valueObject) throws SQLException;
 
@@ -80,7 +81,7 @@ public interface ScheduleDAO {
      * @param valueObject This parameter contains the class instance to be
      * updated. Primary-key field must be set for this to work properly.
      * @return updateStatus
-     * @throws java.sql.SQLException
+     * @throws SQLException throws exception when there is DB error
      */
     public boolean update(ProgramSlot valueObject) throws SQLException;
 
@@ -95,8 +96,8 @@ public interface ScheduleDAO {
      *
      * @param valueObject This parameter contains the class instance to be
      * deleted. Primary-key field must be set for this to work properly.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+     * @throws SQLException throws exception when there is DB error
+     * @throws NotFoundException throws exception when there is not found error
      */
     public void delete(ProgramSlot valueObject) throws NotFoundException, SQLException;
 
@@ -109,10 +110,10 @@ public interface ScheduleDAO {
      * those criteria you specified. Those instance-variables that have NULL
      * values are excluded in search-criteria.
      *
-     * @param valueObject This parameter contains the class instance where
+     * @param startDate This parameter contains the class instance where
      * search will be based. Primary-key field should not be set.
-     * @return
-     * @throws java.sql.SQLException
+     * @return list of ProgramSlot
+     * @throws SQLException throws exception when there is DB error
      */
     public List<ProgramSlot> searchMatching(String startDate) throws SQLException;
     
@@ -129,10 +130,10 @@ public interface ScheduleDAO {
      * those criteria you specified. Those instance-variables that have NULL
      * values are excluded in search-criteria.
      *
-     * @param valueObject This parameter contains the class instance where
-     * search will be based. Primary-key field should not be set.
-     * @return
-     * @throws java.sql.SQLException
+     * @param valueObject This parameter contains the class instance where search will be based. Primary-key field should not be set.
+     * @param criteria condition of input
+     * @return boolean to check schedule
+     * @throws SQLException throws exception when there is DB error
      */
     public boolean checkProgramSlotAvailabiltiy(ProgramSlot valueObject, String criteria) throws SQLException;
 

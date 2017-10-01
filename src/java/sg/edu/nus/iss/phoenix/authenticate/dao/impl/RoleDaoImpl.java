@@ -343,8 +343,8 @@ public class RoleDaoImpl implements RoleDao {
      * sure that if cache is used, it will reset when data changes.
      *
      * @param stmt This parameter contains the SQL statement to be excuted.
-     * @return
-     * @throws java.sql.SQLException
+     * @return int statement status
+     * @throws SQLException throws exception when there is DB error
      */
     protected int databaseUpdate(PreparedStatement stmt) throws SQLException {
 
@@ -359,10 +359,10 @@ public class RoleDaoImpl implements RoleDao {
      * resultset will be converted to valueObject. If no rows were found,
      * NotFoundException will be thrown.
      *
-     * @param stmt This parameter contains the SQL statement to be excuted.
+     * @param stmt This parameter contains the SQL statement to be executed.
      * @param valueObject Class-instance where resulting data will be stored.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+     * @throws NotFoundException throws exception when there is not found error
+     * @throws SQLException throws exception when there is DB error
      */
     protected void singleQuery(PreparedStatement stmt, Role valueObject)
             throws NotFoundException, SQLException {
@@ -393,8 +393,8 @@ public class RoleDaoImpl implements RoleDao {
      * found, an empty List will be returned.
      *
      * @param stmt This parameter contains the SQL statement to be excuted.
-     * @return
-     * @throws java.sql.SQLException
+     * @return list of roles
+     * @throws SQLException throws exception when there is DB error
      */
     protected List<Role> listQuery(PreparedStatement stmt) throws SQLException {
 
@@ -429,8 +429,8 @@ public class RoleDaoImpl implements RoleDao {
     /**
      * to get all roles from DB
      *
-     * @return
-     * @throws SQLException
+     * @return list of roles
+     * @throws SQLException throws exception when there is DB error
      */
     @Override
     public List<Role> getAllRoles() throws SQLException {

@@ -44,6 +44,10 @@ public class PhoenixFrontController extends HttpServlet {
 
 	/**
 	 * Process requests from clients.
+         * @param request http request
+         * @param response http response
+         * @throws ServletException ServletException class
+         * @throws IOException IOException class
 	 */
 	protected void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {

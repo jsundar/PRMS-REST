@@ -12,27 +12,21 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.firstDayOfNextMonth;
 import static java.time.temporal.TemporalAdjusters.nextOrSame;
-import java.time.temporal.TemporalAmount;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
-import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.entity.WeeklySchedule;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 
 /**
  *
- * @author 
- *      WIN - getProgramSlotList, getWeeklySchedules, copySchedule, prepareSchedulesCopy
- *      PRABAKARAN - createSchedule & modifySchedule
- * 
+ * @author WIN and PRABAKARAN
+ * @version 1.0
  */
 public class ScheduleService {
 
@@ -53,11 +47,10 @@ public class ScheduleService {
      * command this method will read the generated primary-key back to
      * valueObject if automatic surrogate-keys were used.
      *
-     * @param valueObject This parameter contains the class instance to be
+     * @param ps This parameter contains the class instance to be
      * created. Automatic surrogate-keys are used the Primary-key field must be
      * set for this to work properly.
      * @return createStatus
-     * @throws java.sql.SQLException
      */
     public String createSchedule(ProgramSlot ps) {
         String statusMessage = "";
@@ -91,10 +84,9 @@ public class ScheduleService {
      * database. If save can not find matching row, NotFoundException will be
      * thrown.
      *
-     * @param valueObject This parameter contains the class instance to be
+     * @param ps This parameter contains the class instance to be
      * updated. Primary-key field must be set for this to work properly.
      * @return updateStatus
-     * @throws java.sql.SQLException
      */
     public String modifySchedule(ProgramSlot ps) {
         String statusMessage = "";
@@ -131,11 +123,7 @@ public class ScheduleService {
      * searchMatching. The result will be 0-N objects in a List, all matching
      * those criteria you specified. Those instance-variables that have NULL
      * values are excluded in search-criteria.
-     *
-     * @param valueObject This parameter contains the class instance where
-     * search will be based. Primary-key field should not be set.
-     * @return
-     * @throws java.sql.SQLException
+     * @return list of WeeklySchedule
      */
     public List<WeeklySchedule> getWeeklySchedules() {
         List<WeeklySchedule> weeklySchedules = new ArrayList<>();
@@ -178,11 +166,9 @@ public class ScheduleService {
      * command this method will read the generated primary-key back to
      * valueObject if automatic surrogate-keys were used.
      *
-     * @param String This parameter contains the startedate and enddate to 
-     * create weekly schedule. Automatic surrogate-keys are used the Primary-key field must be
-     * set for this to work properly.
+     * @param fromDate This parameter contains the start date to create weekly schedule.
+     * @param toDate This parameter contains the end date to create weekly schedule.
      * @return createStatus
-     * @throws java.sql.SQLException
      */
     public boolean copySchedule(String fromDate, String toDate) {
         boolean result = false;
@@ -220,11 +206,8 @@ public class ScheduleService {
      * command this method will read the generated primary-key back to
      * valueObject if automatic surrogate-keys were used.
      *
-     * @param List<ProgramSlot> This parameter contains the list of ProgramSlots to 
-     * create weekly schedule. Automatic surrogate-keys are used the Primary-key field must be
-     * set for this to work properly.
-     * @return List<ProgramSlot>
-     *      returns all the 
+     * @param fromProgramSlots list of program slot for the purpose of preparing schedule to copy
+     * @return List<ProgramSlot> returns all the 
      * @throws java.sql.SQLException
      */
     private List<ProgramSlot> prepareSchedulesCopy(List<ProgramSlot> fromProgramSlots) throws ParseException {

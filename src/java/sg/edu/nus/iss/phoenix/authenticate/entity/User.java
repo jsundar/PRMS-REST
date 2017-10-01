@@ -27,7 +27,6 @@ public class User implements Cloneable, Serializable {
 	 * simple way to create object instance. The another one takes one argument,
 	 * which is the primary key of the corresponding table.
 	 */
-
 	public User() {
 
 	}
@@ -42,8 +41,8 @@ public class User implements Cloneable, Serializable {
 	 * Get- and Set-methods for persistent variables. The default behaviour does
 	 * not make any checks against malformed data, so these might require some
 	 * manual additions.
+         * @return string id
 	 */
-
 	public String getId() {
 		return this.id;
 	}
@@ -81,8 +80,11 @@ public class User implements Cloneable, Serializable {
 	 * useful, when all data is available and it is needed to set the initial
 	 * state of this object. Note that this method will directly modify instance
 	 * variales, without going trough the individual set-methods.
+         * @param idIn id
+         * @param passwordIn password
+         * @param nameIn name
+         * @param roleIn role
 	 */
-
 	public void setAll(String idIn, String passwordIn, String nameIn,
 			String roleIn) {
 		this.id = idIn;
@@ -98,6 +100,8 @@ public class User implements Cloneable, Serializable {
 	 * hasEqualMapping returns true, it does not mean the objects are the same
 	 * instance. However it does mean that in that moment, they are mapped to
 	 * the same row in database.
+         * @param valueObject user object
+         * @return boolean true if successful
 	 */
 	public boolean hasEqualMapping(User valueObject) {
 

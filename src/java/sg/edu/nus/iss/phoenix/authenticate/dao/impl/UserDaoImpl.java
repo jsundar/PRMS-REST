@@ -370,8 +370,8 @@ public class UserDaoImpl implements UserDao {
      * sure that if cache is used, it will reset when data changes.
      *
      * @param stmt This parameter contains the SQL statement to be excuted.
-     * @return
-     * @throws java.sql.SQLException
+     * @return int success of statement
+     * @throws SQLException throws exception when there is DB error
      */
     protected int databaseUpdate(PreparedStatement stmt) throws SQLException {
 
@@ -388,8 +388,8 @@ public class UserDaoImpl implements UserDao {
      *
      * @param stmt This parameter contains the SQL statement to be excuted.
      * @param valueObject Class-instance where resulting data will be stored.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+     * @throws NotFoundException throws exception when there is not found error
+     * @throws SQLException throws exception when there is DB error
      */
     protected void singleQuery(PreparedStatement stmt, User valueObject)
             throws NotFoundException, SQLException {
@@ -424,9 +424,9 @@ public class UserDaoImpl implements UserDao {
      * resultset will be converted to the List of valueObjects. If no rows were
      * found, an empty List will be returned.
      *
-     * @param stmt This parameter contains the SQL statement to be excuted.
-     * @return
-     * @throws java.sql.SQLException
+     * @param stmt This parameter contains the SQL statement to be executed.
+     * @return list of user
+     * @throws SQLException throws exception when there is DB error
      */
     protected List<User> listQuery(PreparedStatement stmt) throws SQLException {
 

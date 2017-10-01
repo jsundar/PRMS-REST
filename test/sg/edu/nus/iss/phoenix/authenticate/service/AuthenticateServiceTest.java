@@ -28,7 +28,9 @@ import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 
 /**
  *
+ * 
  * @author William
+ * @version 1.0 2017/10/01
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticateServiceTest extends TestCase {

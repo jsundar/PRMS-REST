@@ -294,10 +294,9 @@ public class ProgramDAOImpl implements ProgramDAO {
 	 * value indicates how many rows were affected. This method will also make
 	 * sure that if cache is used, it will reset when data changes.
 	 * 
-	 * @param stmt
-	 *            This parameter contains the SQL statement to be excuted.
-     * @return 
-     * @throws java.sql.SQLException
+	 * @param stmt This parameter contains the SQL statement to be excuted.
+         * @return int data result
+         * @throws SQLException throws exception when there is DB error
 	 */
 	protected int databaseUpdate(PreparedStatement stmt) throws SQLException {
 
@@ -312,12 +311,10 @@ public class ProgramDAOImpl implements ProgramDAO {
 	 * resultset will be converted to valueObject. If no rows were found,
 	 * NotFoundException will be thrown.
 	 * 
-	 * @param stmt
-	 *            This parameter contains the SQL statement to be excuted.
-	 * @param valueObject
-	 *            Class-instance where resulting data will be stored.
-     * @throws sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException
-     * @throws java.sql.SQLException
+	 * @param stmt This parameter contains the SQL statement to be executed.
+	 * @param valueObject Class-instance where resulting data will be stored.
+         * @throws SQLException throws exception when there is DB error
+         * @throws NotFoundException throws exception when there is not found error
 	 */
 	protected void singleQuery(PreparedStatement stmt, RadioProgram valueObject)
 			throws NotFoundException, SQLException {
@@ -353,10 +350,9 @@ public class ProgramDAOImpl implements ProgramDAO {
 	 * resultset will be converted to the List of valueObjects. If no rows were
 	 * found, an empty List will be returned.
 	 * 
-	 * @param stmt
-	 *            This parameter contains the SQL statement to be excuted.
-     * @return 
-     * @throws java.sql.SQLException
+	 * @param stmt This parameter contains the SQL statement to be executed.
+         * @return list of RadioProgram
+         * @throws SQLException throws exception when there is DB error
 	 */
 	protected List<RadioProgram> listQuery(PreparedStatement stmt) throws SQLException {
 

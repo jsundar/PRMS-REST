@@ -39,60 +39,61 @@ public class UserService {
     }
     
     /**
-    * List<User> getUserList().
     * Retrieving all users stored in database
-    * @return List<User>
-    * @throws java.sql.SQLException
+    * @return list of users
+    * @throws SQLException throws exception when there is DB error
     */
     public List<User> getUserList() throws SQLException {  
         return udao.loadAll();
     }
     
     /**
-    * List<User> getProducerList().
     * Retrieving all users with role of Producer stored in database
-    * @return List<User>
-    * @throws java.sql.SQLException
+    * 
+    * @return list of user
+    * @throws java.sql.SQLException throws exception when there is DB error
     */
     public List<User> getProducerList() throws SQLException {  
         return udao.loadAllProducer();
     }
     
     /**
-    * List<User> getPresenterList().
     * Retrieving all users with role of Presenter stored in database
-    * @return List<User>
-    * @throws java.sql.SQLException
+    * 
+    * @return list of user
+    * @throws java.sql.SQLException throws exception when there is DB error
     */
     public List<User> getPresenterList() throws SQLException {  
         return udao.loadAllPresenter();
     }
     
     /**
-    * createAUser(User user)
     * creating user profile entry in database
-    * @Param User
-    * @throws java.sql.SQLException
+    * 
+    * @param user to be created
+    * @throws java.sql.SQLException throws exception when there is DB error
     */
     public void createAUser(User user) throws SQLException{  
         udao.create(user);
     }
     
     /**
-    * loadUser(User user)
     * loading user profile entry in database
-    * @Param User
-    * @throws java.sql.SQLException
+    * 
+    * @param user user to be loaded
+    * @throws SQLException throws exception when there is DB error
+    * @throws NotFoundException throws exception when there is not found error
     */
     public void loadUser(User user) throws SQLException, NotFoundException {  
         udao.load(user);
     }
     
     /**
-    * updateUser(User user)
     * updating user profile entry in database
-    * @Param User
-    * @throws java.sql.SQLException
+    * 
+    * @param user user for updating
+    * @throws SQLException throws exception when there is DB error
+    * @throws NotFoundException throws exception when there is not found error
     */
     public void updateUser(User user) throws SQLException, NotFoundException {  
         udao.save(user);
@@ -101,8 +102,10 @@ public class UserService {
     /**
     * deleteUser(User user)
     * delete user profile entry in database
-    * @Param User
-    * @throws java.sql.SQLException
+    * @param user user for deleting
+    * @return boolean true if user is deleted
+    * @throws SQLException throws exception when there is DB error
+    * @throws NotFoundException throws exception when there is not found error
     */
     public boolean deleteUser(User user) throws SQLException, NotFoundException {  
         boolean isDeleted = true;

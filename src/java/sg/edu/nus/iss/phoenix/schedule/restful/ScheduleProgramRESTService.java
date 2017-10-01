@@ -68,8 +68,8 @@ public class ScheduleProgramRESTService {
     /**
      * POST method for creating an instance of resource
      *
-     * @param ps
-     * @return
+     * @param ps ProgramSlot
+     * @return response http response
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
