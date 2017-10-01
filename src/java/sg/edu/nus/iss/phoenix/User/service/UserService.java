@@ -7,14 +7,12 @@ package sg.edu.nus.iss.phoenix.User.service;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import sg.edu.nus.iss.phoenix.authenticate.dao.UserDao;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
-import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
 
 /**
@@ -71,12 +69,12 @@ public class UserService {
     }
     
     /**
-    * createUserInfo(User user)
+    * createAUser(User user)
     * creating user profile entry in database
     * @Param User
     * @throws java.sql.SQLException
     */
-    public void createUserInfo(User user) throws SQLException{  
+    public void createAUser(User user) throws SQLException{  
         udao.create(user);
     }
     

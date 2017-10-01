@@ -27,7 +27,7 @@ import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
 @Path("/user")
 @RequestScoped
-public class UserRESTService {
+public class UserInfoRESTService {
     
     private UserService service;
     
@@ -35,7 +35,7 @@ public class UserRESTService {
      private static final Logger logger = 
 			Logger.getLogger(UserService.class.getName());
     
-    public UserRESTService() {
+    public UserInfoRESTService() {
         service = new UserService();
     }
     
@@ -97,7 +97,7 @@ public class UserRESTService {
     @Path("create")
     public Response createAUser(User user) {
         try {
-            service.createUserInfo(user);
+            service.createAUser(user);
             return Response.status(Response.Status.OK).entity("No Record found..").build();
         } catch(SQLException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
@@ -107,7 +107,7 @@ public class UserRESTService {
     
     @GET
     @Path("select/{userid}")
-    public Response selectAllUser(@PathParam("userid") String userid) {
+    public Response selectUser(@PathParam("userid") String userid) {
         
         User user = new User();
         user.setId(userid);

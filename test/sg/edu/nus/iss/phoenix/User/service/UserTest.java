@@ -45,7 +45,7 @@ public class UserTest {
         UserService service = new UserService();
         
         try {
-        service.createUserInfo(user);
+        service.createAUser(user);
         } catch (SQLException e) {
             fail();
             System.out.println(e);
