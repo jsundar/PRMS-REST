@@ -58,7 +58,7 @@ public class ScheduleService {
         String statusMessage = "";
         try {
             // Adding second for the database operation
-            ps.setStartTime(ps.getStartTime() + ":00");
+            ps.setStartTime(ps.getStartTime());
             
             statusMessage = validateScedule(ps);
             if (statusMessage.length() > 0) {
@@ -97,7 +97,7 @@ public class ScheduleService {
         String statusMessage = "";
         try {
             // Adding second for the database operation
-            ps.setStartTime(ps.getStartTime() + ":00");
+            ps.setStartTime(ps.getStartTime());
             
             statusMessage = validateScedule(ps);
             if (statusMessage.length() > 0) {
