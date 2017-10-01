@@ -3,21 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.Package;
+package sg.edu.nus.iss.phoenix.User.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import javax.ws.rs.core.Response;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import sg.edu.nus.iss.phoenix.User.service.UserService;
 import sg.edu.nus.iss.phoenix.authenticate.entity.Role;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
@@ -35,22 +26,17 @@ public class UserTest {
 
     }
     
-    @Test
-    public void Usertest_CreateMock()
-    {
-        User user = new User();
-        user.setId("123");
-        user.setName("wong");
-        UserService service=mock(UserService.class);
-
-    }
-    
+     /**
+     * Usertest_Create-method. 
+     * This is Junit test to Create User to database
+     *
+     */
     @Test
     public void Usertest_Create()
     {
         User user = new User();
         user.setId("1234");
-        user.setName("wongPresenter");
+        user.setName("ABCDEFG");
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(new Role("Presenter"));
         user.setRoles(roles);
@@ -64,8 +50,15 @@ public class UserTest {
             fail();
             System.out.println(e);
         }
+        Usertest_Edit();
+        Usertest_Delete();
     }
     
+     /**
+     * Usertest_Retrieve-method. 
+     * This is Junit test to retrieve all Users from database
+     *
+     */
     @Test
     public void Usertest_Retrieve()
     {
@@ -79,6 +72,11 @@ public class UserTest {
         }        
     }    
     
+     /**
+     * Usertest_RetrievePresenter-method. 
+     * This is Junit test to retrieve all Users with Presenter Role from database
+     *
+     */
     @Test
     public void Usertest_RetrievePresenter()
     {
@@ -92,6 +90,11 @@ public class UserTest {
         }        
     }
  
+     /**
+     * Usertest_RetrieveProducer-method. 
+     * This is Junit test to retrieve all Users with Producer Role from database
+     *
+     */
     @Test
     public void Usertest_RetrieveProducer()
     {
@@ -105,13 +108,17 @@ public class UserTest {
         }        
     }
         
-    @Test
+     /**
+     * Usertest_Edit-method. 
+     * This is Junit test to test functionality to edit user profile in database
+     *
+     */
     public void Usertest_Edit()
     {
         User user = new User();
-        user.setId("123");
-        user.setName("wongcheevui");
-        user.setPassword("123456");
+        user.setId("1234");
+        user.setName("ABCEdited");
+        user.setPassword("123edited");
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(new Role("statio manager"));
         user.setRoles(roles);
@@ -128,12 +135,15 @@ public class UserTest {
         }
     }
     
-    @Test
+     /**
+     * Usertest_Delete-method. 
+     * This is Junit test to delete user profile in database
+     *
+     */
     public void Usertest_Delete()
     {
         User user = new User();
-        user.setId("123");
-        user.setName("wong");
+        user.setId("1234");
         UserService service = new UserService();        
         try {
         service.deleteUser(user);
