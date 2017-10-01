@@ -1,4 +1,4 @@
-/*
+	/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -41,11 +41,11 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
     public ScheduleDAOImpl(Connection connection) {
         super();
-        this.connection = openConnection();
+        this.connection = connection;
     }
 
     public ScheduleDAOImpl() {
-
+        this.connection = openConnection();
     }
 
     @Override
@@ -63,20 +63,19 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     @Override
     public boolean create(ProgramSlot valueObject) throws SQLException {
 
-        String sql = null;
+        String sql = "";
         boolean statusFlag = false;
         PreparedStatement stmt = null;
         try {
-            sql = "INSERT INTO program-slot (id, duration, dateOfProgram, startTime, program-name, presenter, producer) VALUES (?, ?, ?, ?, ?,?,?) ";
+            sql = " INSERT INTO `phoenix`.`program-slot` ( duration, dateOfProgram, startTime, `program-name`, presenter, producer) VALUES (?, ?, ?, ?, ?,?); ";
             stmt = this.connection.prepareStatement(sql);
 
-            stmt.setInt(1, valueObject.getId());
-            stmt.setString(2, valueObject.getDuration());
-            stmt.setString(3, valueObject.getDateOfProgram());
-            stmt.setString(4, valueObject.getStartTime());
-            stmt.setString(5, valueObject.getProgram().getName());
-            stmt.setString(6, valueObject.getPresenter().getId());
-            stmt.setString(7, valueObject.getProducer().getId());
+            stmt.setString(1, valueObject.getDuration());
+            stmt.setString(2, valueObject.getDateOfProgram());
+            stmt.setString(3, valueObject.getStartTime());
+            stmt.setString(4, valueObject.getProgram().getName());
+            stmt.setString(5, valueObject.getPresenter().getId());
+            stmt.setString(6, valueObject.getProducer().getId());
 
             int rowcount = databaseUpdate(stmt);
             if (rowcount != 1) {
@@ -87,14 +86,13 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             if (stmt != null) {
                 stmt.close();
             }
-            closeConnection();
         }
         return !statusFlag;
     }
 
     @Override
     public boolean update(ProgramSlot valueObject) throws SQLException {
-        String sql = "UPDATE program-slot SET duration = ?, dateOfProgram = ?, startTime = ?, program-name = ?, presenter = ?, producer = ? WHERE (id = ? ) ";
+        String sql = "UPDATE `phoenix`.`program-slot` SET duration = ?, dateOfProgram = ?, startTime = ?, `program-name` = ?, presenter = ?, producer = ? WHERE ( id = ? ) ";
         PreparedStatement stmt = null;
         boolean statusFlag = false;
         try {
@@ -106,7 +104,6 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             stmt.setString(4, valueObject.getProgram().getName());
             stmt.setString(5, valueObject.getPresenter().getId());
             stmt.setString(6, valueObject.getProducer().getId());
-
             stmt.setInt(7, valueObject.getId());
 
             int rowcount = databaseUpdate(stmt);
@@ -123,7 +120,6 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             if (stmt != null) {
                 stmt.close();
             }
-            closeConnection();
         }
         return !statusFlag;
     }
@@ -138,13 +134,13 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         String sql = "SELECT * FROM Program-Slot";
         PreparedStatement stmt = null;
         List<ProgramSlot> programSlotList = new ArrayList<>();
-        
+
         try {
             stmt = this.connection.prepareStatement(sql);
             ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 ProgramSlot programSlot = new ProgramSlot();
-                
+
                 readRecord(result, programSlot);
                 programSlotList.add(programSlot);
             }
@@ -183,9 +179,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         try {
             connection = openConnection();
             pstmt = connection.prepareStatement(query);
-            
+
             DAOFactory daoFactory = new DAOFactoryImpl();
-            UserDao userDAO = daoFactory.getUserDAO();  
+            UserDao userDAO = daoFactory.getUserDAO();
             ProgramDAO programDAO = daoFactory.getProgramDAO();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -208,9 +204,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             while (rs.next()) {
                 ProgramSlot currentObject = new ProgramSlot();
                 readRecord(rs, currentObject);
-                
+
                 try {
-                    
+
                     currentObject.setPresenter(userDAO.getObject(currentObject.getPresenter().getId()));
                     currentObject.setProducer(userDAO.getObject(currentObject.getProducer().getId()));
                     currentObject.setProgram(programDAO.getObject(currentObject.getProgram().getName()));
@@ -258,20 +254,19 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
         valueObject.setDuration(sdfTime.format(result.getTime("duration")));
         valueObject.setStartTime(result.getString("startTime"));
-        
+
         RadioProgram radioProgram = new RadioProgram();
         radioProgram.setName(result.getString("program-name"));
         valueObject.setProgram(radioProgram);
-        
+
         User presenter = new User();
         presenter.setId(result.getString("presenter"));
         valueObject.setPresenter(presenter);
-        
+
         User producer = new User();
         producer.setId(result.getString("producer"));
         valueObject.setProducer(producer);
-       
-            
+
 //        valueObject.setProgramName(result.getString("program-name"));
 //        valueObject.setProgramName(result.getString("presenter"));
 //        valueObject.setProgramName(result.getString("producer"));
@@ -293,12 +288,12 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         return conn;
     }
 
-    private void closeConnection() {
+    public void closeConnection() {
         try {
             this.connection.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -321,9 +316,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     }
 
     private String getProgramSlotValidationScript(String criteria) {
-        String query = "SELECT * " //id, duration, dateOfProgram, DATE_FORMAT(startTime,  '%H:%i') startTime, `program-name`, presenter, producer "
-                + "FROM `program-slot` WHERE dateOfProgram = ? and DATE_FORMAT(startTime,  '%H:%i') = ? and "
-                + "program-name = ? ";
+        String query = "SELECT * "
+                + "FROM `program-slot` WHERE dateOfProgram = ? and startTime = ? and "
+                + "`program-name` = ? ";
 
         switch (criteria) {
             case "All":
@@ -351,8 +346,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         ResultSet rs = null;
 
         try {
-            connection = openConnection();
-            pstmt = connection.prepareStatement(query);
+            pstmt = this.connection.prepareStatement(query);
 
             pstmt.setString(1, ps.getDateOfProgram());
             pstmt.setString(2, ps.getStartTime());
@@ -390,8 +384,6 @@ public class ScheduleDAOImpl implements ScheduleDAO {
             if (pstmt != null) {
                 pstmt.close();
             }
-
-            closeConnection();
         }
 
         return result;
