@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import sg.edu.nus.iss.phoenix.core.dao.DBConstants;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
@@ -385,30 +387,30 @@ public class ProgramDAOImpl implements ProgramDAO {
 		return (List<RadioProgram>) searchResults;
 	}
 
-	private void openConnection() {
-		try {
-			Class.forName(DBConstants.COM_MYSQL_JDBC_DRIVER);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    private Connection openConnection() {
+             
+        try {
+            Class.forName(DBConstants.COM_MYSQL_JDBC_DRIVER);
+        } catch (ClassNotFoundException e) {
+            Logger.getLogger(ProgramDAOImpl.class.getName()).log(Level.SEVERE, null, e);
+        }
 
-		try {
-			this.connection = DriverManager.getConnection(DBConstants.dbUrl,
-					DBConstants.dbUserName, DBConstants.dbPassword);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+        try {
+            connection = DriverManager.getConnection(DBConstants.dbUrl, DBConstants.dbUserName, DBConstants.dbPassword);
+        } catch (SQLException e) {
+            Logger.getLogger(ProgramDAOImpl.class.getName()).log(Level.SEVERE, null, e);
 
-	private void closeConnection() {
-		try {
-			this.connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+        }
+        return connection;
+    }
+        
+
+    private void closeConnection() {
+        try {
+                this.connection.close();
+        } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+    }
 }

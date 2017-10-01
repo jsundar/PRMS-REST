@@ -376,7 +376,7 @@ public class RoleDaoImpl implements RoleDao {
 		} finally {
                     /*if(stmt != null)*/
 				stmt.close();
-		
+			closeConnection();
 		}
 	}
 
