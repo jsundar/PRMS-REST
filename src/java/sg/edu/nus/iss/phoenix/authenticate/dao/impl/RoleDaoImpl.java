@@ -419,6 +419,28 @@ public class RoleDaoImpl implements RoleDao {
 		return (List<Role>) searchResults;
 	}
 
+        @Override
+    public List<Role> getAllRoles() throws SQLException {
+
+        List<Role> searchResults = new ArrayList<> ();
+        PreparedStatement stmt = null;
+
+        String sql = "SELECT role,accessPrivilege FROM phoenix.role";
+        ResultSet result = null;
+        try {
+            stmt = connection.prepareStatement(sql);
+            result = stmt.executeQuery();
+            while (result.next()) {
+                Role role = new Role();
+                role.setRole(result.getString(1));
+                role.setAccessPrivilege(result.getString(2));
+            }
+        } catch(SQLException e) {
+            throw e;
+        }
+
+        return searchResults;
+       }
 	private Connection openConnection() {
 		Connection conn = null;
 

@@ -32,5 +32,7 @@ public interface ScheduleDAO {
     
     public boolean checkProgramSlotAvailabiltiy(ProgramSlot valueObject, String criteria) throws SQLException; 
     
-     public void closeConnection();
+    public abstract int getAssignedUserToProgramSlot(String userId) throws SQLException;
+    
+    public void closeConnection();
 }

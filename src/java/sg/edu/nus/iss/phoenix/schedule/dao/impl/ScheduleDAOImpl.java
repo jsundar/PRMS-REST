@@ -388,5 +388,27 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
         return result;
     }
+    
+     public int getAssignedUserToProgramSlot(String userId) throws SQLException {
+            
+        String sqlString = "SELECT count(*) `radio-program` where presenter = ? or producerid = ?";
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int rowcount = 0;
+
+        try {
+            stmt = connection.prepareStatement(sqlString);
+            stmt.setString(1, userId);
+            stmt.setString(2, userId);
+            rs = stmt.executeQuery();
+            if(rs.next()) {
+                 rowcount = rs.getInt(1);
+            }          
+        } catch(SQLException e) {
+            throw e;
+        }
+        return rowcount;
+    }
 
 }

@@ -192,4 +192,8 @@ public class ScheduleService {
         }
         return validationStatus;
     }
+    
+    public int getAssignedUserToProgramSlot(String userId) throws SQLException {
+        return scheduleDAO.getAssignedUserToProgramSlot(userId);
+    }
 }

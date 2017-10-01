@@ -64,8 +64,14 @@ public class UserService {
         udao.save(user);
     }
     
-    public void deleteUser(User user) throws SQLException, NotFoundException {  
-       
+    public boolean deleteUser(User user) throws SQLException, NotFoundException {  
+        boolean isDeleted = true;
+        if (programSlotService.getAssignedUserToProgramSlot(user.getId()) == 0) {
+            udao.delete(user);
+        } else {
+            isDeleted = false;
+        }
+        return isDeleted;
     }
     
 }

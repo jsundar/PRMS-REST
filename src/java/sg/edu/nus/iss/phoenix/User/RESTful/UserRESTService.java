@@ -139,14 +139,18 @@ public class UserRESTService {
         }
     }
     
-    @POST
-    @Path("delete")
+   @POST
+    @Path("delete/{userid}")
     public Response deleteUser(@PathParam("userid") String userid) {
         try {
             User user = new User();
             user.setId(userid);
-            service.deleteUser(user);
-            return Response.ok(user, MediaType.APPLICATION_JSON).build();
+            if(service.deleteUser(user)) {
+                return Response.ok(user, MediaType.APPLICATION_JSON).build();
+            } else {
+                return Response.status(Response.Status.NOT_ACCEPTABLE).entity(userid + " is already assigned with programslot.").build();
+            }
+            
         } catch(SQLException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
             return Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
