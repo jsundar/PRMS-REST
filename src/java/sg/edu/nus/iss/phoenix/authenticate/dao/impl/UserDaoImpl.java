@@ -103,14 +103,34 @@ public class UserDaoImpl implements UserDao {
 
         return searchResults;
     }
+    
+    @Override
+    public List<User> loadAllPresenter() throws SQLException {
 
-    /*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * sg.edu.nus.iss.phoenix.authenticate.dao.impl.UserDao#create(java.sql.
-	 * Connection, sg.edu.nus.iss.phoenix.authenticate.entity.User)
-     */
+        String sql = "SELECT * FROM user  WHERE (role = 'Presenter') ";
+        List<User> searchResults = listQuery(this.connection
+                            .prepareStatement(sql));
+        for(User u :searchResults)
+        {
+            u.setPassword("");
+        }
+        return searchResults;
+    }
+        
+    @Override
+    public List<User> loadAllProducer() throws SQLException {
+
+        String sql = "SELECT * FROM user  WHERE (role = 'Producer') ";
+        List<User> searchResults = listQuery(this.connection
+                         .prepareStatement(sql));
+            
+        for(User u :searchResults)
+        {
+             u.setPassword("");
+        }
+            return searchResults;
+    }
+
     @Override
     public synchronized void create(User valueObject) throws SQLException {
 
