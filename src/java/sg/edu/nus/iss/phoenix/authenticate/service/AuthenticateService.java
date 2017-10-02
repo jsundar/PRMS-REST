@@ -13,6 +13,11 @@ import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.core.exceptions.NotFoundException;
 
+/**
+ *
+ * @author Lecturer
+ * @version 1.0
+ */
 public class AuthenticateService {
 
 	private static final Logger logger = 
@@ -51,8 +56,13 @@ public class AuthenticateService {
 		return null;
 	}
 */
-	//The user that we pass in to authenticate is different from the
-	//instance that is returnedsearchMatching
+	
+        /**
+        * This method validate the user id and passsword
+        *
+        * @param toAuth user with its attribute
+        * @return list of users
+        */
 	public User validateUserIdPassword(final User toAuth) {
 		User found = null;
 		try {
@@ -79,6 +89,12 @@ public class AuthenticateService {
 		return (found);
 	}
 
+        /**
+        * This method validate the user id and passsword
+        *
+        * @param user user to be accessed
+        * @return a user with correct previledge
+        */
 	public User evaluateAccessPreviledge(User user) {
 		try {
 			Role role = rdao.getObject(user.getRoles().get(0).getRole());

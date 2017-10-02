@@ -7,7 +7,6 @@ package sg.edu.nus.iss.phoenix.schedule.service;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import junit.framework.TestCase;
 import org.junit.After;
@@ -17,11 +16,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.runners.MockitoJUnitRunner;
-import sg.edu.nus.iss.phoenix.User.service.UserService;
 import sg.edu.nus.iss.phoenix.authenticate.entity.User;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
@@ -29,8 +25,8 @@ import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
 import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 
 /**
- *
  * @author William
+ * @version 1.0 2017/10/01
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ScheduleServiceTest extends TestCase {
@@ -308,7 +304,7 @@ public class ScheduleServiceTest extends TestCase {
         
         Boolean result = scheduleService.copySchedule("30/06/2017","30/07/2017");
         
-        Assert.assertTrue(result);
+        Assert.assertFalse(result);
     }
     
     

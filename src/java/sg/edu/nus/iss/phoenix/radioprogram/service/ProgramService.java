@@ -10,6 +10,11 @@ import sg.edu.nus.iss.phoenix.radioprogram.dao.ProgramDAO;
 import sg.edu.nus.iss.phoenix.radioprogram.entity.RadioProgram;
 import sg.edu.nus.iss.phoenix.schedule.service.ScheduleService;
 
+/**
+ *
+ * @author Lecturer
+ * @version 1.0
+ */
 public class ProgramService {
 	DAOFactoryImpl factory;
 	ProgramDAO rpdao;
@@ -20,6 +25,13 @@ public class ProgramService {
 		factory = new DAOFactoryImpl();
 		rpdao = factory.getProgramDAO();
 	}
+        
+        /**
+        * This method find the list of radio program
+        *
+        * @param rpso radio program to be search
+        * @return list of found radio program 
+        */
 	public ArrayList<RadioProgram> searchPrograms(RadioProgram rpso) {
 		ArrayList<RadioProgram> list = new ArrayList<>();
 		try {
@@ -31,6 +43,12 @@ public class ProgramService {
 		return list;
 	}
 
+        /**
+        * This method find the radio program using ID
+        *
+        * @param rp radio program to be search
+        * @return list of found radio program 
+        */
 	public ArrayList<RadioProgram> findRPByCriteria(RadioProgram rp) {
 		ArrayList<RadioProgram> currentList = new ArrayList<RadioProgram>();
 
@@ -45,6 +63,12 @@ public class ProgramService {
 
 	}
 
+        /**
+        * This method find the radio program using name
+        *
+        * @param rpName name of radio program to be search
+        * @return the unique radio program
+        */
 	public RadioProgram findRP(String rpName) {
 		RadioProgram currentrp = new RadioProgram();
 		currentrp.setName(rpName);
@@ -60,6 +84,11 @@ public class ProgramService {
 
 	}
 
+        /**
+        * This method find all radio program
+        *
+        * @return list of all radio program
+        */
 	public ArrayList<RadioProgram> findAllRP() {
 		ArrayList<RadioProgram> currentList = new ArrayList<RadioProgram>();
 		try {
@@ -72,6 +101,11 @@ public class ProgramService {
 
 	}
         
+        /**
+        * This method create the radio program
+        *
+        * @param rp radio program to create
+        */
 	public void processCreate(RadioProgram rp) {
 		try {
 			rpdao.create(rp);
@@ -81,6 +115,11 @@ public class ProgramService {
 		}
 	}
 
+        /**
+        * This method modify the radio program
+        *
+        * @param rp radio program to modify
+        */
 	public void processModify(RadioProgram rp) {
 		
 			try {
@@ -95,6 +134,11 @@ public class ProgramService {
 		
 	}
 
+        /**
+        * This method delete the radio program
+        *
+        * @param name name of radio program to delete
+        */
 	public void processDelete(String name) {
 
             try {
