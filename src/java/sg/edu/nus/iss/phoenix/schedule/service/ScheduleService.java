@@ -23,7 +23,6 @@ import sg.edu.nus.iss.phoenix.core.dao.DAOFactoryImpl;
 import sg.edu.nus.iss.phoenix.schedule.entity.ProgramSlot;
 import sg.edu.nus.iss.phoenix.schedule.entity.WeeklySchedule;
 import sg.edu.nus.iss.phoenix.schedule.dao.ScheduleDAO;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 /**
  *
@@ -42,17 +41,10 @@ public class ScheduleService {
     }
 
     /**
-     * create-method. This will create new program-slot in database according to
-     * supplied valueObject contents. Make sure that values for all NOT NULL
-     * columns are correctly specified. Also, if this table does not use
-     * automatic surrogate-keys the primary-key must be specified. After INSERT
-     * command this method will read the generated primary-key back to
-     * valueObject if automatic surrogate-keys were used.
+     * This method create a new schedule
      *
-     * @param ps This parameter contains the class instance to be
-     * created. Automatic surrogate-keys are used the Primary-key field must be
-     * set for this to work properly.
-     * @return createStatus
+     * @param ps program slot to be created in the DB
+     * @return result of create status 
      */
     public String createSchedule(ProgramSlot ps) {
         String statusMessage = "";
@@ -82,16 +74,10 @@ public class ScheduleService {
     }
 
     /**
-     * update-method. This method will save the current state of valueObject to
-     * database. Save can not be used to create new instances in database, so
-     * upper layer must make sure that the primary-key is correctly specified.
-     * Primary-key will indicate which instance is going to be updated in
-     * database. If save can not find matching row, NotFoundException will be
-     * thrown.
+     * This method provide the interface to modify a schedule
      *
-     * @param ps This parameter contains the class instance to be
-     * updated. Primary-key field must be set for this to work properly.
-     * @return updateStatus
+     * @param ps program slot that is to be modified
+     * @return status of the modify operation
      */
     public String modifySchedule(ProgramSlot ps) {
         String statusMessage = "";
@@ -119,6 +105,12 @@ public class ScheduleService {
         return statusMessage;
     }
     
+    /**
+     * This method provides the interface to delete a schedule
+     * 
+     * @param id start date of the program slot list
+     * @return status of the delete operation
+     */
     public boolean deleteSchdule(int id) {
         boolean result = false;
         
@@ -134,6 +126,13 @@ public class ScheduleService {
         return result;
     }
 
+    /**
+     * This method provides the interface to get the list of weekly schedule
+     * 
+     * @param startDate start date of the program slot list
+     * @return list of all WeeklySchedule
+     * @throws SQLException throws exception when execute DB operation fails
+     */
     public List<ProgramSlot> getProgramSlotList(String startDate) throws SQLException {
        
        List<ProgramSlot> programSlots = new ArrayList<>();
@@ -149,14 +148,9 @@ public class ScheduleService {
     }
     
     /**
-     * getWeeklySchedules-Method. This method provides searching capability to get
-     * matching valueObjects from database. It works by searching all objects
-     * that match permanent instance variables of given object. Upper layer
-     * should use this by setting some parameters in valueObject and then call
-     * searchMatching. The result will be 0-N objects in a List, all matching
-     * those criteria you specified. Those instance-variables that have NULL
-     * values are excluded in search-criteria.
-     * @return list of WeeklySchedule
+     * This method provides the interface to get the list of weekly schedule
+     * 
+     * @return list of all WeeklySchedule
      */
     public List<WeeklySchedule> getWeeklySchedules() {
         List<WeeklySchedule> weeklySchedules = new ArrayList<>();
@@ -190,16 +184,11 @@ public class ScheduleService {
     }
 
     /**
-     * copySchedule-method. This will create new program-slot in database according to
-     * supplied valueObject contents. Make sure that values for all NOT NULL
-     * columns are correctly specified. Also, if this table does not use
-     * automatic surrogate-keys the primary-key must be specified. After INSERT
-     * command this method will read the generated primary-key back to
-     * valueObject if automatic surrogate-keys were used.
+     * This method will copy the schedule with a defined start date and end date
      *
-     * @param fromDate This parameter contains the start date to create weekly schedule.
-     * @param toDate This parameter contains the end date to create weekly schedule.
-     * @return createStatus
+     * @param fromDate Contains the start date to create weekly schedule.
+     * @param toDate Contains the end date to create weekly schedule.
+     * @return status of the copying operation
      */
     public boolean copySchedule(String fromDate, String toDate) {
         boolean result = false;
@@ -238,16 +227,13 @@ public class ScheduleService {
     }
 
     /**
-     * prepareSchedulesCopy-method. This will create new program-slot in database according to
-     * supplied valueObject contents. Make sure that values for all NOT NULL
-     * columns are correctly specified. Also, if this table does not use
-     * automatic surrogate-keys the primary-key must be specified. After INSERT
-     * command this method will read the generated primary-key back to
-     * valueObject if automatic surrogate-keys were used.
+     * This will prepare the program slot that is required to be copied
      *
      * @param fromProgramSlots list of program slot for the purpose of preparing schedule to copy
-     * @return List<ProgramSlot> returns all the 
-     * @throws java.sql.SQLException
+     * @param from date from
+     * @param to date to
+     * @return list of ProgramSlot object copied
+     * @throws java.sql.SQLException throws exception when execute DB operation fails
      */
     private List<ProgramSlot> prepareSchedulesCopy(List<ProgramSlot> fromProgramSlots, String from, String to) throws ParseException {
 
@@ -280,6 +266,13 @@ public class ScheduleService {
         return fromProgramSlots;
     }
 
+    /**
+     * This method validate the program slot with required checking
+     *
+     * @param ps program slot to be validated
+     * @return result of operation
+     * @throws java.sql.SQLException throws exception when execute DB operation fails
+     */
     private String validateScedule(ProgramSlot ps) throws SQLException {
         String validationStatus = "";
 
@@ -297,11 +290,22 @@ public class ScheduleService {
         return validationStatus;
     }
 
-
+   /**
+     * This method assign a user to a program slot
+     *
+     * @param userId user id of program slot
+     * @return result of operation
+     * @throws SQLException throws exception when execute DB operation fails
+     */
     public int getAssignedUserToProgramSlot(String userId) throws SQLException {
         return scheduleDAO.getAssignedUserToProgramSlot(userId);
     }
     
+    /**
+     * Main method of this class
+     *
+     * @param args array of string argument
+     */
     public static void main(String[] args) {
         String fromDate = "20170101";
         String toDate = "20170122";

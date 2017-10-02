@@ -96,6 +96,7 @@ public interface ScheduleDAO {
      *
      * @param valueObject This parameter contains the class instance to be
      * deleted. Primary-key field must be set for this to work properly.
+     * @return boolean true if success
      * @throws SQLException throws exception when there is DB error
      * @throws NotFoundException throws exception when there is not found error
      */
