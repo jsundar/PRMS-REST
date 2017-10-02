@@ -242,6 +242,11 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
+            if (connection != null &&
+                    connection.isClosed()) {
+                connection = this.openConnection();
+            }
+            
             pstmt = connection.prepareStatement(query);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -292,10 +297,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
                 pstmt.close();
                 pstmt = null;
             }
-            
-            userDAO.closeConnection();
-            
-  
+          
         }
 
         return ret;
