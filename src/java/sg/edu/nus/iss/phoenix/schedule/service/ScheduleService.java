@@ -50,7 +50,7 @@ public class ScheduleService {
         String statusMessage = "";
         try {
             // Adding second for the database operation
-            ps.setStartTime(ps.getStartTime());
+            ps.setStartTime(ps.getDateOfProgram() + " " + ps.getStartTime());
             
             statusMessage = validateScedule(ps);
             if (statusMessage.length() > 0) {
@@ -83,7 +83,7 @@ public class ScheduleService {
         String statusMessage = "";
         try {
             // Adding second for the database operation
-            ps.setStartTime(ps.getStartTime());
+            ps.setStartTime(ps.getDateOfProgram() + " " + ps.getStartTime());
             
             statusMessage = validateScedule(ps);
             if (statusMessage.length() > 0) {
@@ -301,17 +301,5 @@ public class ScheduleService {
         return scheduleDAO.getAssignedUserToProgramSlot(userId);
     }
     
-    /**
-     * Main method of this class
-     *
-     * @param args array of string argument
-     */
-    public static void main(String[] args) {
-        String fromDate = "20170101";
-        String toDate = "20170122";
-        
-        ScheduleService service =  new ScheduleService();
-        service.copySchedule(fromDate, toDate);
-    }
-
+   
 }

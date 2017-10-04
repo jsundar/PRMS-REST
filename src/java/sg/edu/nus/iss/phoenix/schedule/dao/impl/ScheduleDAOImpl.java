@@ -254,7 +254,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(sDate);
-            cal.add(Calendar.DAY_OF_MONTH, 7);
+            cal.add(Calendar.DAY_OF_MONTH, 6);
 
             Date eDate = cal.getTime();
 
